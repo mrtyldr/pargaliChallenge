@@ -58,5 +58,10 @@ public class UserManager implements UserService {
         return new SuccessDataResult<>(this.userDao.findBalance(email));
     }
 
+    @Override
+    public void save(User user) {
+        this.userDao.save(user);
+    }
+
 
 }

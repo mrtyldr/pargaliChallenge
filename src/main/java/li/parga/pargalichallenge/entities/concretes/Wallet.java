@@ -4,6 +4,7 @@ package li.parga.pargalichallenge.entities.concretes;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.hibernate.mapping.Join;
 import java.util.List;
@@ -15,6 +16,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Table(name = "wallets")
 @JsonIgnoreProperties({"user","transactions"})
+@EqualsAndHashCode
 public class Wallet {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

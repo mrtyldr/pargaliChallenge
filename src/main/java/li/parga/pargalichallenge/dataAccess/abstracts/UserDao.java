@@ -15,4 +15,6 @@ public interface UserDao extends JpaRepository<User,Integer> {
             "from Wallet w inner join w.user u where" +
             " u.email = :email")
     WalletWithUserNameDto findBalance(@Param("email") String email);
+
+    void deleteUserByUserId(int userId);
 }

@@ -17,7 +17,7 @@ public class CategoryController {
         this.categoryService = categoryService;
     }
 
-    @PostMapping("addcategory")
+    @PostMapping("/addcategory")
     DataResult<Category> addCategory(@RequestBody Category category){
         return this.categoryService.addCategory(category);
     }
@@ -25,6 +25,11 @@ public class CategoryController {
     @GetMapping("/findAll")
     public DataResult<List<Category>> findAll(){
         return this.categoryService.findAll();
+    }
+
+    @GetMapping("/findbycategoryid/{categoryId}")
+    public DataResult<Category> findByCategoryId(@PathVariable int categoryId){
+        return this.categoryService.findByCategoryId(categoryId);
     }
 
 }

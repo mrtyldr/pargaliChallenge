@@ -10,8 +10,8 @@ import java.util.List;
 
 @Repository
 public interface TransactionsDao extends JpaRepository<Transaction,Integer> {
-    @Query("SELECT t FROM Transaction t WHERE fts(:description) = true")
-    List<Transaction> search(@Param("description") String description);
+    @Query("SELECT t FROM Transaction t WHERE fts(:category) = true")
+    List<Transaction> search(@Param("category") String category);
 
 
 }

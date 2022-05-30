@@ -1,5 +1,8 @@
 package li.parga.pargalichallenge.core.utilities.results;
 
+import lombok.EqualsAndHashCode;
+
+@EqualsAndHashCode
 public class SuccessDataResult<T> extends DataResult<T>{
 
     public SuccessDataResult(T data, String message) {
