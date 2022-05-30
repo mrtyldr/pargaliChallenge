@@ -1,0 +1,35 @@
+version: "3.8"
+services:
+  ##postgres ##
+  postgres:
+    image: postgres:14.3
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD : test
+      POSTGRES_DB: db
+  postgres_admin:
+    image: dpage/pgadmin4:6.9
+    depends_on:
+      - postgres
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: test
+    ports:
+      - "5433:5433"
+    ##API##
+  api:
+    build:
+      dockerfile: Dockerfile
+      context: /
+    depends_on:
+      - postgres
+    environment:
+      DATABASE_URL: postgresql://postgres:5432/db
+      DATABASE_USER: admin
+      DATABASE_PASSWORD: test
+    ports:
+      - "8080:5434"
+
+
