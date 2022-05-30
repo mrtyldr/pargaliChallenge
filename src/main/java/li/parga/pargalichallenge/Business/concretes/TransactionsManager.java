@@ -11,9 +11,9 @@ import li.parga.pargalichallenge.entities.concretes.Wallet;
 import li.parga.pargalichallenge.entities.concretes.dto.TransactionWithWalletsId;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -49,6 +49,10 @@ public class TransactionsManager implements TransactionService {
     @Override
     public DataResult<List<Transaction> >search(String description) {
         return new SuccessDataResult<>(this.transactionsDao.search(description));
+    }
+
+    public DataResult<List<Transaction>> findAllOrderByDateAsc() {
+        return new SuccessDataResult<>(this.transactionsDao.findAll(Sort.by("date").ascending()));
     }
 
 

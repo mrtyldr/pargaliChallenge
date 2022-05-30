@@ -14,4 +14,6 @@ DataResult<TransactionWithWalletsId> makeTransaction(TransactionWithWalletsId tr
 
  DataResult<List<Transaction> >search(String description);
 
+ DataResult<List<Transaction>> findAllOrderByDateAsc();
+
 }

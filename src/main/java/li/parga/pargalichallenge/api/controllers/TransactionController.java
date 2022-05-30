@@ -38,5 +38,10 @@ public class TransactionController {
         return this.transactionService.search(description);
     }
 
+    @GetMapping("/findallascbydate")
+    public DataResult<List<Transaction>> findAllOrderByDateAsc(){
+        return this.transactionService.findAllOrderByDateAsc();
+    }
+
 
 }
