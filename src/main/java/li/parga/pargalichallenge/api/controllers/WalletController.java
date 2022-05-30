@@ -10,16 +10,16 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/controllers/walletcontroller")
 public class WalletController {
-    private WalletService walletService;
+    private final WalletService walletService;
     @Autowired
     public WalletController(WalletService walletService) {
         this.walletService = walletService;
     }
 
-    @PostMapping("/create-wallet")
+    /*@PostMapping("/create-wallet")
     DataResult<Wallet> createWallet(@RequestBody WalletWithUserId walletWithUserId){
         return this.walletService.createWallet(walletWithUserId);
-    }
+    }*/
 
     @GetMapping("/findbyemail/{email}")
     public DataResult<Wallet> findByUser_Email(@PathVariable String email){
