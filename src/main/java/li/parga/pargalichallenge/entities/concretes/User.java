@@ -54,11 +54,14 @@ public class User {
     @OneToOne(mappedBy = "user")
     private Wallet wallet;
 
-    public User(int userId, String firstName, String lastName, String password, String email) {
-        this.userId = userId;
+    public User(String firstName, String lastName, String password, String email) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.password = password;
         this.email = email;
+    }
+    public User(int id, String firstName, String lastName, String password, String email) {
+        this(firstName, lastName, password, email);
+        this.userId = id;
     }
 }

@@ -6,7 +6,6 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class UserWithoutWalletDto {
-    private int userId;
 
     private String firstName;
 

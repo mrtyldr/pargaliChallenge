@@ -32,7 +32,7 @@ public class UserManager implements UserService {
     public DataResult<User> addUser(UserWithoutWalletDto userWithoutWalletDto){
 
 
-        User user = new User(userWithoutWalletDto.getUserId(), userWithoutWalletDto.getFirstName(), userWithoutWalletDto.getLastName(),
+        User user = new User(userWithoutWalletDto.getFirstName(), userWithoutWalletDto.getLastName(),
                 userWithoutWalletDto.getPassword(), userWithoutWalletDto.getEmail());
         this.userDao.save(user);
         Wallet wallet = new Wallet(user,0);
