@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/controllers/usercontroller")
+
 public class UserController {
     private final UserService userService;
     private final WalletService walletService;
@@ -21,27 +21,27 @@ public class UserController {
         this.walletService = walletService;
     }
 
-    @PostMapping("/adduser")
+    @PostMapping("/api/users")
     public DataResult<User> addUser(@RequestBody UserWithoutWalletDto user){
         return this.userService.addUser(user);
     }
 
-    @GetMapping("/findbyuserid/{userId}")
+    @GetMapping("/api/users/{userId}")
     DataResult<User> findByUserId(@PathVariable int userId){
         return this.userService.findByUserId(userId);
     }
 
-    @GetMapping("/findbyemail/{email}")
+    @GetMapping("/api/users/{email}")
     public DataResult<User> findByEmail(@PathVariable String email){
         return this.userService.findByEmail(email);
     }
 
-    @GetMapping("/deleteuser/{email}")
+    @DeleteMapping("/api/users/{email}")
     public DataResult<User> deleteUserByEmail(@PathVariable String email){
         return this.userService.deleteUserByEmail(email);
     }
 
-    @GetMapping("/findbalance")
+    @GetMapping("/api/users/{email}/balances")
     public DataResult<WalletWithUserNameDto> findBalance(String email){
         return this.userService.findBalance(email);
     }
