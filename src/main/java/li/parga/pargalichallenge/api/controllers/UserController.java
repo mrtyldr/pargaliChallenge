@@ -23,7 +23,6 @@ public class UserController {
 
     @PostMapping("/adduser")
     public DataResult<User> addUser(@RequestBody UserWithoutWalletDto user){
-        int userId = user.getUserId();
         return this.userService.addUser(user);
     }
 

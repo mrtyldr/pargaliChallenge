@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/controllers/categorycontroller")
 public class CategoryController {
     private CategoryService categoryService;
 
@@ -17,17 +16,16 @@ public class CategoryController {
         this.categoryService = categoryService;
     }
 
-    @PostMapping("/addcategory")
+    @PostMapping("/api/categories")
     DataResult<Category> addCategory(@RequestBody Category category){
         return this.categoryService.addCategory(category);
     }
-
-    @GetMapping("/findAll")
+    @GetMapping("/api/categories")
     public DataResult<List<Category>> findAll(){
         return this.categoryService.findAll();
     }
 
-    @GetMapping("/findbycategoryid/{categoryId}")
+    @GetMapping("/api/categories/{categoryId}")
     public DataResult<Category> findByCategoryId(@PathVariable int categoryId){
         return this.categoryService.findByCategoryId(categoryId);
     }
