@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/controllers/walletcontroller")
+
 public class WalletController {
     private final WalletService walletService;
     @Autowired
@@ -21,7 +21,7 @@ public class WalletController {
         return this.walletService.createWallet(walletWithUserId);
     }*/
 
-    @GetMapping("/findbyemail/{email}")
+    @GetMapping("/api/wallets/{email}")
     public DataResult<Wallet> findByUser_Email(@PathVariable String email){
         return this.walletService.findByUser_Email(email);
     }

@@ -1,4 +1,4 @@
-package li.parga.pargalichallenge;
+package li.parga.pargalichallenge.security;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;

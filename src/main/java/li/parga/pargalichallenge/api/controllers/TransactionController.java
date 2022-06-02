@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 @RestController
-@RequestMapping("/api/controllers/transactioncontroller")
+
 public class TransactionController {
     private final TransactionService transactionService;
     private final UserService userService;
@@ -23,12 +23,12 @@ public class TransactionController {
         this.categoryService = categoryService;
     }
 
-    @PostMapping("/make-transaction")
+    @PostMapping("/api/transactions")
     public DataResult<TransactionWithWalletsId> makeTransaction(@RequestBody TransactionWithWalletsId transactionWithWalletsId){
         return this.transactionService.makeTransaction(transactionWithWalletsId);
     }
 
-    @GetMapping("findall")
+    @GetMapping("/api/transactions")
     List<Transaction> findAll(){
         return this.transactionService.findAll();
     }
@@ -38,7 +38,7 @@ public class TransactionController {
         return this.transactionService.search(description);
     }
 
-    @GetMapping("/findallascbydate")
+    @GetMapping("/api/transactions/asc")
     public DataResult<List<Transaction>> findAllOrderByDateAsc(){
         return this.transactionService.findAllOrderByDateAsc();
     }
