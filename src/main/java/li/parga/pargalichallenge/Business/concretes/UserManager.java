@@ -62,7 +62,7 @@ public class UserManager implements UserService, UserDetailsService {
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         this.userDao.save(user);
-        Wallet wallet = new Wallet(user,0);
+        Wallet wallet = new Wallet(user,0,"CASH","TRY");
         this.walletDao.save(wallet);
         return new SuccessDataResult<>(this.userDao.save(user));
     }

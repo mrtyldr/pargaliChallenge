@@ -20,7 +20,8 @@ public class WalletManager implements WalletService {
 
     @Override
     public DataResult<Wallet> createWallet(WalletWithUserId walletWithUserId) {
-        Wallet wallet = new Wallet(this.userDao.findByUserId(walletWithUserId.getUserId()), walletWithUserId.getBalance());
+        Wallet wallet = new Wallet(this.userDao.findByUserId(walletWithUserId.getUserId()), walletWithUserId.getBalance(), walletWithUserId.getAccountType(),
+                walletWithUserId.getCurrency());
         return new SuccessDataResult<>(this.walletDao.save(wallet));
     }
 
