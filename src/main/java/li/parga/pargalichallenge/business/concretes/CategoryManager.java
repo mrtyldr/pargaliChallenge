@@ -5,19 +5,17 @@ import li.parga.pargalichallenge.core.utilities.results.DataResult;
 import li.parga.pargalichallenge.core.utilities.results.SuccessDataResult;
 import li.parga.pargalichallenge.dataaccess.abstracts.CategoryDao;
 import li.parga.pargalichallenge.entities.concretes.Category;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class CategoryManager implements CategoryService {
+    private final CategoryDao categoryDao;
 
-    private CategoryDao categoryDao;
-    @Autowired
-    public CategoryManager(CategoryDao categoryDao) {
-        this.categoryDao = categoryDao;
-    }
 
     @Override
     public DataResult<Category> addCategory(Category category) {
