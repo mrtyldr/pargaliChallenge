@@ -1,7 +1,7 @@
 package li.parga.pargalichallenge.api.controllers;
 
 
-import li.parga.pargalichallenge.Business.abstracts.CategoryService;
+import li.parga.pargalichallenge.business.abstracts.CategoryService;
 import li.parga.pargalichallenge.core.utilities.results.DataResult;
 import li.parga.pargalichallenge.entities.concretes.Category;
 import org.springframework.web.bind.annotation.*;

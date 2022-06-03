@@ -1,16 +1,15 @@
-package li.parga.pargalichallenge.Business.concretes;
+package li.parga.pargalichallenge.business.concretes;
 
 
-import li.parga.pargalichallenge.Business.abstracts.UserService;
+import li.parga.pargalichallenge.business.abstracts.UserService;
 import li.parga.pargalichallenge.core.utilities.results.DataResult;
 import li.parga.pargalichallenge.core.utilities.results.SuccessDataResult;
-import li.parga.pargalichallenge.dataAccess.abstracts.UserDao;
+import li.parga.pargalichallenge.dataaccess.abstracts.UserDao;
 
-import li.parga.pargalichallenge.dataAccess.abstracts.WalletDao;
+import li.parga.pargalichallenge.dataaccess.abstracts.WalletDao;
 import li.parga.pargalichallenge.entities.concretes.User;
 import li.parga.pargalichallenge.entities.concretes.Wallet;
 import li.parga.pargalichallenge.entities.concretes.dto.UserWithoutWalletDto;
-import li.parga.pargalichallenge.entities.concretes.dto.WalletWithUserId;
 import li.parga.pargalichallenge.entities.concretes.dto.WalletWithUserNameDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +23,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 
 
 @Service

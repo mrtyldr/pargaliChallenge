@@ -1,11 +1,11 @@
-package li.parga.pargalichallenge.Business.concretes;
+package li.parga.pargalichallenge.business.concretes;
 
-import li.parga.pargalichallenge.Business.abstracts.TransactionService;
+import li.parga.pargalichallenge.business.abstracts.TransactionService;
 import li.parga.pargalichallenge.core.utilities.results.DataResult;
 import li.parga.pargalichallenge.core.utilities.results.SuccessDataResult;
-import li.parga.pargalichallenge.dataAccess.abstracts.CategoryDao;
-import li.parga.pargalichallenge.dataAccess.abstracts.TransactionsDao;
-import li.parga.pargalichallenge.dataAccess.abstracts.WalletDao;
+import li.parga.pargalichallenge.dataaccess.abstracts.CategoryDao;
+import li.parga.pargalichallenge.dataaccess.abstracts.TransactionsDao;
+import li.parga.pargalichallenge.dataaccess.abstracts.WalletDao;
 import li.parga.pargalichallenge.entities.concretes.Transaction;
 import li.parga.pargalichallenge.entities.concretes.Wallet;
 import li.parga.pargalichallenge.entities.concretes.dto.TransactionWithWalletsId;

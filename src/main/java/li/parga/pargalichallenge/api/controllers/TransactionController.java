@@ -1,8 +1,8 @@
 package li.parga.pargalichallenge.api.controllers;
 
-import li.parga.pargalichallenge.Business.abstracts.CategoryService;
-import li.parga.pargalichallenge.Business.abstracts.TransactionService;
-import li.parga.pargalichallenge.Business.abstracts.UserService;
+import li.parga.pargalichallenge.business.abstracts.CategoryService;
+import li.parga.pargalichallenge.business.abstracts.TransactionService;
+import li.parga.pargalichallenge.business.abstracts.UserService;
 import li.parga.pargalichallenge.core.utilities.results.DataResult;
 import li.parga.pargalichallenge.entities.concretes.Transaction;
 import li.parga.pargalichallenge.entities.concretes.dto.TransactionWithWalletsId;

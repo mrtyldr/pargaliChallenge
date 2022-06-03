@@ -1,9 +1,6 @@
 package li.parga.pargalichallenge.api.controllers;
 
-import li.parga.pargalichallenge.Business.abstracts.WalletService;
-import li.parga.pargalichallenge.core.utilities.results.DataResult;
-import li.parga.pargalichallenge.entities.concretes.Wallet;
-import li.parga.pargalichallenge.entities.concretes.dto.WalletWithUserId;
+import li.parga.pargalichallenge.business.abstracts.WalletService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

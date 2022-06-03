@@ -1,9 +1,9 @@
-package li.parga.pargalichallenge.Business.concretes;
+package li.parga.pargalichallenge.business.concretes;
 
-import li.parga.pargalichallenge.Business.abstracts.CategoryService;
+import li.parga.pargalichallenge.business.abstracts.CategoryService;
 import li.parga.pargalichallenge.core.utilities.results.DataResult;
 import li.parga.pargalichallenge.core.utilities.results.SuccessDataResult;
-import li.parga.pargalichallenge.dataAccess.abstracts.CategoryDao;
+import li.parga.pargalichallenge.dataaccess.abstracts.CategoryDao;
 import li.parga.pargalichallenge.entities.concretes.Category;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
