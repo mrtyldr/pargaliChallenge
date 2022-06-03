@@ -1,7 +1,17 @@
-hibernate:
-  hbm2ddl:
-    auto: create
-  dialect: org.hibernate.dialect.H2Dialect
-jdbc:
-  driverClassName: org.h2.Driver
-  url: jdbc:h2:mem:myDb;DB_CLOSE_DELAY=-1
+spring:
+  datasource:
+    username: admin
+    url: jdbc:h2:mem:myDb;DB_CLOSE_DELAY=-1
+    password: test
+    driver-class-name: org.h2.Driver
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+      javax:
+        persistence:
+          validation:
+            mode: none
+    hibernate:
+      show-sql: 'true'
+      ddl-auto: create-drop
