@@ -1,9 +1,9 @@
-package li.parga.pargalichallenge.Business.concretes;
+package li.parga.pargalichallenge.business.concretes;
 
-import li.parga.pargalichallenge.Business.abstracts.UserService;
+import li.parga.pargalichallenge.business.abstracts.UserService;
 import li.parga.pargalichallenge.core.utilities.results.SuccessDataResult;
-import li.parga.pargalichallenge.dataAccess.abstracts.UserDao;
-import li.parga.pargalichallenge.dataAccess.abstracts.WalletDao;
+import li.parga.pargalichallenge.dataaccess.abstracts.UserDao;
+import li.parga.pargalichallenge.dataaccess.abstracts.WalletDao;
 import li.parga.pargalichallenge.entities.concretes.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

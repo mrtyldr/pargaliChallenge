@@ -1,8 +1,8 @@
-package li.parga.pargalichallenge.api.controllers;
+package li.parga.pargalichallenge.api;
 
 
-import li.parga.pargalichallenge.Business.abstracts.UserService;
-import li.parga.pargalichallenge.Business.abstracts.WalletService;
+import li.parga.pargalichallenge.business.abstracts.UserService;
+import li.parga.pargalichallenge.business.abstracts.WalletService;
 import li.parga.pargalichallenge.core.utilities.results.DataResult;
 import li.parga.pargalichallenge.entities.concretes.User;
 import li.parga.pargalichallenge.entities.concretes.Wallet;
@@ -12,8 +12,10 @@ import li.parga.pargalichallenge.entities.concretes.dto.WalletWithUserNameDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
+import java.security.Principal;
+import java.util.List;
 
+@RestController
 public class UserController {
     private final UserService userService;
     private final WalletService walletService;
@@ -28,15 +30,15 @@ public class UserController {
         return this.userService.addUser(user);
     }
 
-    @GetMapping("/api/users/{userId}")
-    DataResult<User> findByUserId(@PathVariable int userId){
-        return this.userService.findByUserId(userId);
+    @GetMapping("/api/user")
+    DataResult<User> findByUserId(Principal principal){
+        var result = userService.findByEmail(principal.getName());
+        if (result.getData() == null)
+            throw new NotFoundException("user not found!");
+
+        return result;
     }
 
-    @GetMapping("/api/users/email")
-    public DataResult<User> findByEmail( String email){
-        return this.userService.findByEmail(email);
-    }
 
     @DeleteMapping("/api/users/email")
     public DataResult<User> deleteUserByEmail( String email){
@@ -45,12 +47,12 @@ public class UserController {
 
     @GetMapping("/api/users/{userId}/balance")
     public DataResult<WalletWithUserNameDto> findBalance(@PathVariable int userId){
-        return this.userService.findBalance(userId);
+        return userService.findBalance(userId);
     }
 
-    @GetMapping("/api/users/{userId}/wallets")
-    public DataResult<Wallet> getWallet(@PathVariable int userId){
-        return this.walletService.findByUser_UserId(userId);
+    @GetMapping("/api/wallets")
+    public DataResult<List<Wallet>> getWallet(Principal principal){
+        return this.walletService.findByUser_Email(principal.getName());
     }
 
     @PostMapping("api/users/{userId}/wallets")

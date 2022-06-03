@@ -1,4 +1,4 @@
-package li.parga.pargalichallenge.dataAccess.abstracts;
+package li.parga.pargalichallenge.dataaccess.abstracts;
 
 import li.parga.pargalichallenge.entities.concretes.User;
 import li.parga.pargalichallenge.entities.concretes.dto.WalletWithUserNameDto;

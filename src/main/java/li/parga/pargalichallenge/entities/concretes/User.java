@@ -2,10 +2,7 @@ package li.parga.pargalichallenge.entities.concretes;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,13 +11,13 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+@Getter
+@Setter
 @Entity
-@Data
 @Table(name = "users")
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonIgnoreProperties({"transactions"})
-@EqualsAndHashCode
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
