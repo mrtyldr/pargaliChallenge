@@ -2,21 +2,20 @@ package li.parga.pargalichallenge.entities.concretes;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.util.List;
+import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "categories")
 @JsonIgnoreProperties("transactions")
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode
 public class Category {
 
     @Id
