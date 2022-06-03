@@ -54,6 +54,9 @@ public class User {
     @OneToOne(mappedBy = "user")
     private Wallet wallet;
 
+    @Column(name = "role")
+    private String role = "USER";
+
     public User(String firstName, String lastName, String password, String email) {
         this.firstName = firstName;
         this.lastName = lastName;

@@ -7,6 +7,7 @@ import li.parga.pargalichallenge.dataAccess.abstracts.WalletDao;
 import li.parga.pargalichallenge.entities.concretes.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
@@ -18,11 +19,14 @@ public class UserManagerTest {
     private WalletDao walletDao;
     private UserService userService;
 
+    private PasswordEncoder passwordEncoder;
+
     @BeforeEach
     public void setUp() {
         userDao = mock(UserDao.class);
         walletDao = mock(WalletDao.class);
-        userService = new UserManager(userDao, walletDao);
+        passwordEncoder = mock(PasswordEncoder.class);
+        userService = new UserManager(userDao, walletDao,passwordEncoder);
     }
 
     @Test
