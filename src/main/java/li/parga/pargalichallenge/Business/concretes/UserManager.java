@@ -21,6 +21,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -54,7 +55,7 @@ public class UserManager implements UserService, UserDetailsService {
         return new org.springframework.security.core.userdetails.User(user.getEmail(),user.getPassword(), authorities);
     }
 
-    public DataResult<User> addUser(UserWithoutWalletDto userWithoutWalletDto){
+    public DataResult<User> addUser(@RequestBody UserWithoutWalletDto userWithoutWalletDto){
 
 
         User user = new User(userWithoutWalletDto.getFirstName(), userWithoutWalletDto.getLastName(),
