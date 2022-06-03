@@ -8,5 +8,5 @@ public interface WalletDao extends JpaRepository<Wallet,Integer> {
 
     Wallet findByUser_Email(String email);
 
-    Wallet deleteByUser_Email(String email);
+
 }

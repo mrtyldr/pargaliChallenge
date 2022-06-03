@@ -31,12 +31,12 @@ public class UserController {
         return this.userService.findByUserId(userId);
     }
 
-    @GetMapping("/api/users/{email}")
+    @GetMapping("/api/users/email={email}")
     public DataResult<User> findByEmail(@PathVariable String email){
         return this.userService.findByEmail(email);
     }
 
-    @DeleteMapping("/api/users/{email}")
+    @DeleteMapping("/api/users/email={email}")
     public DataResult<User> deleteUserByEmail(@PathVariable String email){
         return this.userService.deleteUserByEmail(email);
     }
