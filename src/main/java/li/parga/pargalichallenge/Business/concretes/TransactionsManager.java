@@ -34,7 +34,7 @@ public class TransactionsManager implements TransactionService {
         Wallet wallet = this.walletDao.findByWalletId(transactionWithWalletsId.getWalletId());
         wallet.setBalance(wallet.getBalance() + transactionWithWalletsId.getAmount());
         Transaction transaction =  new Transaction(transactionWithWalletsId.getAmount(), transactionWithWalletsId.getDate(),wallet,
-                this.categoryDao.findByCategoryId(transactionWithWalletsId.getCategoryId()));
+                this.categoryDao.findByCategoryId(transactionWithWalletsId.getCategoryId()),transactionWithWalletsId.getCurrency());
         transactionsDao.save(transaction);
         walletDao.save(wallet);
 

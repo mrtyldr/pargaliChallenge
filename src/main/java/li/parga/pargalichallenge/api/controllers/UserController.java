@@ -11,6 +11,7 @@ import li.parga.pargalichallenge.entities.concretes.dto.WalletWithUserId;
 import li.parga.pargalichallenge.entities.concretes.dto.WalletWithUserNameDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import java.util.List;
 
 @RestController
 
@@ -43,13 +44,13 @@ public class UserController {
         return this.userService.deleteUserByEmail(email);
     }
 
-    @GetMapping("/api/users/{userId}/balance")
+  /*  @GetMapping("/api/users/{userId}/balance")
     public DataResult<WalletWithUserNameDto> findBalance(@PathVariable int userId){
         return this.userService.findBalance(userId);
-    }
+    }*/
 
     @GetMapping("/api/users/{userId}/wallets")
-    public DataResult<Wallet> getWallet(@PathVariable int userId){
+    public DataResult<List<Wallet>> getWallet(@PathVariable int userId){
         return this.walletService.findByUser_UserId(userId);
     }
 

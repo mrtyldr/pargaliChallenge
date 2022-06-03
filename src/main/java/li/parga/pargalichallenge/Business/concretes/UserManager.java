@@ -82,9 +82,9 @@ public class UserManager implements UserService, UserDetailsService {
         return new SuccessDataResult<>(findByEmail(email).getData());
     }
 
-    public DataResult<WalletWithUserNameDto> findBalance(int userId){
+   /* public DataResult<WalletWithUserNameDto> findBalance(int userId){
         return new SuccessDataResult<>(this.userDao.findBalance(userId));
-    }
+    }*/
 
     @Override
     public void save(User user) {

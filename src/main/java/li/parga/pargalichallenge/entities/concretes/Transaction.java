@@ -28,6 +28,9 @@ public class Transaction {
     @Temporal(TemporalType.DATE)
     private Date date;
 
+    @Column(name = "currency")
+    private String currency;
+
     @ManyToOne
     @JoinColumn(name = "wallet_id")
     private Wallet wallet;
@@ -36,10 +39,11 @@ public class Transaction {
     @JoinColumn(name = "category_id")
     private Category category;
 
-    public Transaction(double amount, Date date, Wallet wallet, Category category) {
+    public Transaction(double amount, Date date, Wallet wallet, Category category,String currency) {
         this.amount = amount;
         this.date = date;
         this.wallet = wallet;
         this.category = category;
+        this.currency = currency;
     }
 }

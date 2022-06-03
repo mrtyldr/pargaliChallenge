@@ -7,6 +7,7 @@ import li.parga.pargalichallenge.dataAccess.abstracts.UserDao;
 import li.parga.pargalichallenge.entities.concretes.Wallet;
 import li.parga.pargalichallenge.entities.concretes.dto.WalletWithUserId;
 import org.springframework.stereotype.Service;
+import java.util.List;
 
 @Service
 public class WalletManager implements WalletService {
@@ -26,7 +27,7 @@ public class WalletManager implements WalletService {
     }
 
     @Override
-    public DataResult<Wallet> findByUser_UserId(int userId) {
+    public DataResult<List<Wallet>> findByUser_UserId(int userId) {
         return new SuccessDataResult<>(this.walletDao.findByUser_UserId(userId));
     }
 }

@@ -12,7 +12,7 @@ public interface UserService {
     DataResult<User> findByEmail(String email);
 
     public  DataResult<User> deleteUserByEmail(String email);
-    public DataResult<WalletWithUserNameDto> findBalance(int userId);
+   // public DataResult<WalletWithUserNameDto> findBalance(int userId);
 
     void save(User user);
 

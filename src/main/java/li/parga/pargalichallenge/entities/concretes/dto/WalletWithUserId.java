@@ -2,9 +2,11 @@ package li.parga.pargalichallenge.entities.concretes.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class WalletWithUserId {
     private int userId;
     private double balance;
@@ -13,7 +15,5 @@ public class WalletWithUserId {
 
     private String currency;
 
-    public WalletWithUserId(double balance) {
-        this.balance = balance;
-    }
+
 }

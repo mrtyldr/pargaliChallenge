@@ -18,5 +18,7 @@ public class TransactionWithWalletsId {
 
     private int categoryId;
 
+    private String currency;
+
 
 }
