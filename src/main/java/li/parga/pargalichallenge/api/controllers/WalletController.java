@@ -21,9 +21,6 @@ public class WalletController {
         return this.walletService.createWallet(walletWithUserId);
     }*/
 
-    @GetMapping("/api/wallets/{email}")
-    public DataResult<Wallet> findByUser_Email(@PathVariable String email){
-        return this.walletService.findByUser_Email(email);
-    }
+
 
 }
