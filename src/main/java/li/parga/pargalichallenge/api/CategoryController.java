@@ -1,4 +1,4 @@
-package li.parga.pargalichallenge.api.controllers;
+package li.parga.pargalichallenge.api;
 
 
 import li.parga.pargalichallenge.business.abstracts.CategoryService;

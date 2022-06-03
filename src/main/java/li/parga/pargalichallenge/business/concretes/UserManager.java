@@ -75,7 +75,10 @@ public class UserManager implements UserService, UserDetailsService {
     }
 
     public  DataResult<User> deleteUserByEmail(String email){
-        this.walletDao.delete(this.walletDao.findByUser_Email(email));
+        //TODO: get wallet id
+        var wallet = this.walletDao.findByUser_Email(email).stream().findFirst().get();
+
+        this.walletDao.delete(wallet);
         this.userDao.delete(findByEmail(email).getData());
         return new SuccessDataResult<>(findByEmail(email).getData());
     }

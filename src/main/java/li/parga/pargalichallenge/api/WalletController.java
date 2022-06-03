@@ -1,4 +1,4 @@
-package li.parga.pargalichallenge.api.controllers;
+package li.parga.pargalichallenge.api;
 
 import li.parga.pargalichallenge.business.abstracts.WalletService;
 import org.springframework.beans.factory.annotation.Autowired;
