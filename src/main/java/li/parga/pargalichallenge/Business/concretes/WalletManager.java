@@ -25,7 +25,7 @@ public class WalletManager implements WalletService {
     }
 
     @Override
-    public DataResult<Wallet> findByUser_Email(String email) {
-        return new SuccessDataResult<>(this.walletDao.findByUser_Email(email));
+    public DataResult<Wallet> findByUser_UserId(int userId) {
+        return new SuccessDataResult<>(this.walletDao.findByUser_UserId(userId));
     }
 }

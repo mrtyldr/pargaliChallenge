@@ -7,7 +7,7 @@ import li.parga.pargalichallenge.entities.concretes.dto.WalletWithUserId;
 public interface WalletService {
     DataResult<Wallet> createWallet(WalletWithUserId walletWithUserId);
 
-    DataResult<Wallet> findByUser_Email(String email);
+    DataResult<Wallet> findByUser_UserId(int userId);
 
 
 }
