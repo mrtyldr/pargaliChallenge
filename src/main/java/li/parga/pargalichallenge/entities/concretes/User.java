@@ -51,8 +51,8 @@ public class User {
    /* @OneToMany(mappedBy = "user",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Transaction> transactions;*/
 
-    @OneToOne(mappedBy = "user")
-    private Wallet wallet;
+    @OneToMany(mappedBy = "user")
+    private List<Wallet> wallets;
 
     @Column(name = "role")
     private String role = "USER";

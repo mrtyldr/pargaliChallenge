@@ -7,6 +7,7 @@ import li.parga.pargalichallenge.core.utilities.results.DataResult;
 import li.parga.pargalichallenge.entities.concretes.User;
 import li.parga.pargalichallenge.entities.concretes.Wallet;
 import li.parga.pargalichallenge.entities.concretes.dto.UserWithoutWalletDto;
+import li.parga.pargalichallenge.entities.concretes.dto.WalletWithUserId;
 import li.parga.pargalichallenge.entities.concretes.dto.WalletWithUserNameDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -47,8 +48,13 @@ public class UserController {
         return this.userService.findBalance(userId);
     }
 
-    @GetMapping("/api/users/{userId}/wallet")
+    @GetMapping("/api/users/{userId}/wallets")
     public DataResult<Wallet> getWallet(@PathVariable int userId){
         return this.walletService.findByUser_UserId(userId);
+    }
+
+    @PostMapping("api/users/{userId}/wallets")
+    public DataResult<Wallet> addWallet(@PathVariable("userId") WalletWithUserId wallet){
+        return this.walletService.createWallet(wallet);
     }
 }

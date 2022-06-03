@@ -9,6 +9,10 @@ public class WalletWithUserId {
     private int userId;
     private double balance;
 
+    private String accountType;
+
+    private String currency;
+
     public WalletWithUserId(double balance) {
         this.balance = balance;
     }
