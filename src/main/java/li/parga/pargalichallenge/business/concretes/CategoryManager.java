@@ -2,9 +2,11 @@ package li.parga.pargalichallenge.business.concretes;
 
 import li.parga.pargalichallenge.business.abstracts.CategoryService;
 import li.parga.pargalichallenge.core.utilities.results.DataResult;
+import li.parga.pargalichallenge.core.utilities.results.ErrorDataResult;
 import li.parga.pargalichallenge.core.utilities.results.SuccessDataResult;
 import li.parga.pargalichallenge.dataaccess.abstracts.CategoryDao;
 import li.parga.pargalichallenge.entities.concretes.Category;
+import li.parga.pargalichallenge.exceptions.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,11 +26,18 @@ public class CategoryManager implements CategoryService {
 
     @Override
     public DataResult<Category> findByCategoryId(int categoryId) {
-        return new SuccessDataResult<>(this.categoryDao.findByCategoryId(categoryId));
+        var category = this.categoryDao.findByCategoryId(categoryId);
+        if(category == null)
+            throw  new NotFoundException("Category doesn't exist");
+        return new SuccessDataResult<>(category);
     }
 
     @Override
     public DataResult<List<Category>> findAll() {
-        return new SuccessDataResult<>(this.categoryDao.findAll());
+        var categories = this.categoryDao.findAll();
+        if(categories.size() == 0)
+            throw new NotFoundException("There is no predifined category. please add a category before continue");
+
+        return new SuccessDataResult<>(categories);
     }
 }

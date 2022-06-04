@@ -6,7 +6,7 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class WalletWithUserId {
-    private int userId;
+
     private double balance;
 
     private String accountType;

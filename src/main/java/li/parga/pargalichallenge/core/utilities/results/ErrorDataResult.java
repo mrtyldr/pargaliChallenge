@@ -5,11 +5,13 @@ public class ErrorDataResult <T> extends DataResult<T>{
         super(data, false, message);
     }
 
+    public ErrorDataResult(String message){
+        super(null,false,message);
+    }
+
     public ErrorDataResult(boolean success, T data) {
         super(false, data);
     }
 
-    public ErrorDataResult(){
-        super(false,null);
-    }
+
 }

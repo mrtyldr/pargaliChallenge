@@ -17,7 +17,7 @@ public interface UserDao extends JpaRepository<User, Integer> {
 
     @Query("select new li.parga.pargalichallenge.entities.concretes.dto.WalletWithUserNameDto(u.firstName,u.lastName,w.balance)" +
             "from Wallet w inner join w.user u where" +
-            " u.userId = :userId")
-    WalletWithUserNameDto findBalance(@Param("userId") int userId);
+            " u.email = :email and w.accountType = 'CASH'")
+    WalletWithUserNameDto findBalance(String email);
 
 }

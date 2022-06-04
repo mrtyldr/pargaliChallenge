@@ -12,6 +12,8 @@ import li.parga.pargalichallenge.entities.concretes.User;
 import li.parga.pargalichallenge.entities.concretes.Wallet;
 import li.parga.pargalichallenge.entities.concretes.dto.UserWithoutWalletDto;
 import li.parga.pargalichallenge.entities.concretes.dto.WalletWithUserNameDto;
+import li.parga.pargalichallenge.exceptions.NotFoundException;
+import li.parga.pargalichallenge.exceptions.NotUniqueException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -56,12 +58,11 @@ public class UserManager implements UserService, UserDetailsService {
 
     public DataResult<Object> addUser(UserWithoutWalletDto userWithoutWalletDto) {
 
-        if(userDao.findByEmail(userWithoutWalletDto.getEmail()) != null){
-            return new ErrorDataResult<>(userWithoutWalletDto.getEmail(),"email in use ");
+        if (userDao.findByEmail(userWithoutWalletDto.getEmail()) != null) {
+            throw new NotUniqueException("email is not unique");
         }
         User user = new User(userWithoutWalletDto.getFirstName(), userWithoutWalletDto.getLastName(),
                 userWithoutWalletDto.getPassword(), userWithoutWalletDto.getEmail());
-
 
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -78,7 +79,10 @@ public class UserManager implements UserService, UserDetailsService {
 
     @Override
     public DataResult<User> findByEmail(String email) {
-        return new SuccessDataResult<>(this.userDao.findByEmail(email));
+        var user = this.userDao.findByEmail(email);
+        if (user == null)
+            throw new NotFoundException("User Not Found");
+        return new SuccessDataResult<>(user);
     }
 
     public DataResult<User> deleteUserByEmail(String email) {
@@ -90,8 +94,8 @@ public class UserManager implements UserService, UserDetailsService {
         return new SuccessDataResult<>(findByEmail(email).getData());
     }
 
-    public DataResult<WalletWithUserNameDto> findBalance(int userId) {
-        return new SuccessDataResult<>(this.userDao.findBalance(userId));
+    public DataResult<WalletWithUserNameDto> findBalance(String email) {
+        return new SuccessDataResult<>(this.userDao.findBalance(email));
     }
 
     @Override

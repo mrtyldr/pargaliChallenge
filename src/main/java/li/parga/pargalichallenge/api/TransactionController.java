@@ -30,7 +30,7 @@ public class TransactionController {
         return this.transactionService.findAll();
     }
 
-    @GetMapping("/search")
+    @GetMapping("/api/search")
     public DataResult<List<Transaction>> search(String description) {
         return this.transactionService.search(description);
     }

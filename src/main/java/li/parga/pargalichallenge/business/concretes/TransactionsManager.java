@@ -9,6 +9,8 @@ import li.parga.pargalichallenge.dataaccess.abstracts.WalletDao;
 import li.parga.pargalichallenge.entities.concretes.Transaction;
 import li.parga.pargalichallenge.entities.concretes.Wallet;
 import li.parga.pargalichallenge.entities.concretes.dto.TransactionWithWalletsId;
+import li.parga.pargalichallenge.exceptions.NegativeBalanceException;
+import li.parga.pargalichallenge.exceptions.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.data.domain.Sort;
@@ -32,6 +34,9 @@ public class TransactionsManager implements TransactionService {
     @Override
     public DataResult<TransactionWithWalletsId> makeTransaction(TransactionWithWalletsId transactionWithWalletsId) {
         Wallet wallet = this.walletDao.findByWalletId(transactionWithWalletsId.getWalletId());
+        if (wallet.getBalance() + transactionWithWalletsId.getAmount() < 0) {
+            throw new NegativeBalanceException("You don't have enough money for carrying this transaction out");
+        }
         wallet.setBalance(wallet.getBalance() + transactionWithWalletsId.getAmount());
         Transaction transaction = new Transaction(transactionWithWalletsId.getAmount(), transactionWithWalletsId.getDate(), wallet,
                 this.categoryDao.findByCategoryId(transactionWithWalletsId.getCategoryId()));
@@ -43,6 +48,8 @@ public class TransactionsManager implements TransactionService {
 
     @Override
     public List<Transaction> findAll() {
+        if (this.transactionsDao.findAll().size() == 0)
+            throw new NotFoundException("There aren't any transactions to be shown");
         return this.transactionsDao.findAll();
     }
 

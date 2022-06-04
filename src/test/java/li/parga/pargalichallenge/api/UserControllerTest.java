@@ -9,18 +9,17 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
+
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
-class UserControllerTest {
+class   UserControllerTest {
 
     @Autowired
     UserManager userManager;
@@ -99,5 +98,11 @@ class UserControllerTest {
                            }
                         }
                         """));
+    }
+    @Test
+    void should_return_bad_request_for_invalid_email() throws Exception {
+        UserWithoutWalletDto user = new UserWithoutWalletDto("ahmet","mehmet","123456","aks");
+            mockMvc.perform(post("/api/users",user))
+                    .andExpect(status().isBadRequest());
     }
 }
