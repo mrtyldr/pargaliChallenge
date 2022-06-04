@@ -13,6 +13,7 @@ import li.parga.pargalichallenge.entities.concretes.Wallet;
 import li.parga.pargalichallenge.entities.concretes.dto.UserWithoutWalletDto;
 import li.parga.pargalichallenge.entities.concretes.dto.WalletWithUserNameDto;
 import li.parga.pargalichallenge.exceptions.NotFoundException;
+import li.parga.pargalichallenge.exceptions.NotUniqueException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -57,9 +58,9 @@ public class UserManager implements UserService, UserDetailsService {
 
     public DataResult<Object> addUser(UserWithoutWalletDto userWithoutWalletDto) {
 
-       /* if(userDao.findByEmail(userWithoutWalletDto.getEmail()) != null){
-            return new ErrorDataResult<>(userWithoutWalletDto.getEmail(),"email in use ");
-        }*/
+       if(userDao.findByEmail(userWithoutWalletDto.getEmail()) != null){
+            throw new NotUniqueException();
+        }
         User user = new User(userWithoutWalletDto.getFirstName(), userWithoutWalletDto.getLastName(),
                 userWithoutWalletDto.getPassword(), userWithoutWalletDto.getEmail());
 

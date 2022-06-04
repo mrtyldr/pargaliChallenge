@@ -24,6 +24,13 @@ public class CustomizedExceptionHandling extends ResponseEntityExceptionHandler 
 
     }
 
+    @ExceptionHandler(NotUniqueException.class)
+    ResponseEntity<Object> handleNotUniqueExceptions(NotUniqueException exception){
+        ErrorDataResult dataResult = new ErrorDataResult<>("Not unique exception");
+
+        return new ResponseEntity<>(dataResult,HttpStatus.BAD_REQUEST);
+    }
+
 
 
 
