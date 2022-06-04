@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class WalletWithUserId {
+public class AccountWithUserId {
 
     private double balance;
 
@@ -13,7 +13,7 @@ public class WalletWithUserId {
 
     private String currency;
 
-    public WalletWithUserId(double balance) {
+    public AccountWithUserId(double balance) {
         this.balance = balance;
     }
 }

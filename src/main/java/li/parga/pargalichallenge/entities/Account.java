@@ -14,7 +14,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Table(name = "wallets")
 @JsonIgnoreProperties({"user","transactions"})
-public class Wallet {
+public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "wallet_id")
@@ -36,7 +36,7 @@ public class Wallet {
     @OneToMany(mappedBy = "wallet",cascade = CascadeType.ALL)
     private List<Transaction> transactions;
 
-    public Wallet(User user,double balance, String accountType, String currency) {
+    public Account(User user, double balance, String accountType, String currency) {
         this.balance = balance;
         this.accountType = accountType;
         this.currency = currency;

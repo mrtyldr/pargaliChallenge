@@ -9,7 +9,7 @@ import javax.validation.constraints.NotNull;
 
 @Data
 @AllArgsConstructor
-public class UserWithoutWalletDto {
+public class UserWithoutAccountDto {
     @NotBlank
     @NotNull
     private String firstName;

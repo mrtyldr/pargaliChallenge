@@ -1,7 +1,7 @@
 package li.parga.pargalichallenge.api;
 
 import li.parga.pargalichallenge.service.UserService;
-import li.parga.pargalichallenge.entities.dto.UserWithoutWalletDto;
+import li.parga.pargalichallenge.entities.dto.UserWithoutAccountDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -39,7 +39,7 @@ class UserControllerTest {
     @WithMockUser(username = "hakan@parga.li")
     void should_get_wallets() throws Exception {
         // given
-        userService.addUser(new UserWithoutWalletDto(
+        userService.addUser(new UserWithoutAccountDto(
                 "hakan",
                 "baykuşlar",
                 "123456",
@@ -61,14 +61,14 @@ class UserControllerTest {
                               ]
                         }
                         """));
-        ;
+
     }
 
     @Test
     @WithMockUser(username = "hakan@parga.li")
     void should_get_user() throws Exception {
         // given
-        userService.addUser(new UserWithoutWalletDto(
+        userService.addUser(new UserWithoutAccountDto(
                 "hakan",
                 "baykuşlar",
                 "123456",

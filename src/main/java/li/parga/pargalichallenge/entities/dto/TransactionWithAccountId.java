@@ -9,7 +9,7 @@ import java.util.Date;
 
 @Data
 @AllArgsConstructor
-public class TransactionWithWalletsId {
+public class TransactionWithAccountId {
     private double amount;
 
     private Date date;

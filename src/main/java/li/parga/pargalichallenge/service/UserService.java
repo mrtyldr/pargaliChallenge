@@ -4,13 +4,13 @@ package li.parga.pargalichallenge.service;
 
 import li.parga.pargalichallenge.core.utilities.results.DataResult;
 import li.parga.pargalichallenge.core.utilities.results.SuccessDataResult;
-import li.parga.pargalichallenge.entities.dto.WalletWithUserNameDto;
+import li.parga.pargalichallenge.entities.dto.AccountWithUserNameDto;
 import li.parga.pargalichallenge.repository.UserRepository;
 
-import li.parga.pargalichallenge.repository.WalletRepository;
+import li.parga.pargalichallenge.repository.AccountRepository;
 import li.parga.pargalichallenge.entities.User;
-import li.parga.pargalichallenge.entities.Wallet;
-import li.parga.pargalichallenge.entities.dto.UserWithoutWalletDto;
+import li.parga.pargalichallenge.entities.Account;
+import li.parga.pargalichallenge.entities.dto.UserWithoutAccountDto;
 
 import li.parga.pargalichallenge.exceptions.NotFoundException;
 import li.parga.pargalichallenge.exceptions.NotUniqueException;
@@ -33,13 +33,13 @@ import java.util.Collection;
 public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
 
-    private final WalletRepository walletRepository;
+    private final AccountRepository accountRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserService(UserRepository userRepository, WalletRepository walletRepository, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, AccountRepository accountRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
-        this.walletRepository = walletRepository;
+        this.accountRepository = accountRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -55,19 +55,19 @@ public class UserService implements UserDetailsService {
         return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), authorities);
     }
 
-    public DataResult<Object> addUser(UserWithoutWalletDto userWithoutWalletDto) {
+    public DataResult<Object> addUser(UserWithoutAccountDto userWithoutAccountDto) {
 
-        if (userRepository.findByEmail(userWithoutWalletDto.getEmail()) != null) {
+        if (userRepository.findByEmail(userWithoutAccountDto.getEmail()) != null) {
             throw new NotUniqueException("email is not unique");
         }
-        User user = new User(userWithoutWalletDto.getFirstName(), userWithoutWalletDto.getLastName(),
-                userWithoutWalletDto.getPassword(), userWithoutWalletDto.getEmail());
+        User user = new User(userWithoutAccountDto.getFirstName(), userWithoutAccountDto.getLastName(),
+                userWithoutAccountDto.getPassword(), userWithoutAccountDto.getEmail());
 
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         this.userRepository.save(user);
-        Wallet wallet = new Wallet(user, 0, "CASH", "TRY");
-        this.walletRepository.save(wallet);
+        Account account = new Account(user, 0, "CASH", "TRY");
+        this.accountRepository.save(account);
         return new SuccessDataResult<>(this.userRepository.save(user));
     }
 
@@ -85,22 +85,18 @@ public class UserService implements UserDetailsService {
     }
 
     public DataResult<User> deleteUserByEmail(String email) {
-        //TODO: get wallet id
-        var wallet = this.walletRepository.findByUser_Email(email).stream().findFirst().get();
-
-        this.walletRepository.delete(wallet);
+        var wallets = this.accountRepository.findByUser_Email(email);
+        this.accountRepository.deleteAll(wallets);
         this.userRepository.delete(findByEmail(email).getData());
         return new SuccessDataResult<>(findByEmail(email).getData());
     }
 
-    public DataResult<WalletWithUserNameDto> findBalance(String email) {
+    public DataResult<AccountWithUserNameDto> findBalance(String email) {
         return new SuccessDataResult<>(this.userRepository.findBalance(email));
     }
 
 
-    public void save(User user) {
-        this.userRepository.save(user);
-    }
+
 
 
 }

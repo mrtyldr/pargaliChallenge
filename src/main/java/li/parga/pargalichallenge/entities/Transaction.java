@@ -33,16 +33,16 @@ public class Transaction {
 
     @ManyToOne
     @JoinColumn(name = "wallet_id")
-    private Wallet wallet;
+    private Account account;
 
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
 
-    public Transaction(double amount, Date date, Wallet wallet, Category category) {
+    public Transaction(double amount, Date date, Account account, Category category) {
         this.amount = amount;
         this.date = date;
-        this.wallet = wallet;
+        this.account = account;
         this.category = category;
     }
 }
