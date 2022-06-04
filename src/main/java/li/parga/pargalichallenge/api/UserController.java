@@ -54,9 +54,9 @@ public class UserController {
         return this.userService.deleteUserByEmail(email);
     }
 
-    @GetMapping("/api/users/{userId}/balance")
-    public DataResult<WalletWithUserNameDto> findBalance(@PathVariable int userId) {
-        return userService.findBalance(userId);
+    @GetMapping("/api/user/balance")
+    public DataResult<WalletWithUserNameDto> findBalance(Principal principal) {
+        return userService.findBalance(principal.getName());
     }
 
     @GetMapping("/api/wallets")
@@ -64,8 +64,11 @@ public class UserController {
         return this.walletService.findByUser_Email(principal.getName());
     }
 
-    @PostMapping("api/users/{userId}/wallets")
-    public DataResult<Wallet> addWallet(@PathVariable("userId") WalletWithUserId wallet) {
+    @PostMapping("api/wallets")
+    public DataResult<Wallet> addWallet(@RequestBody WalletWithUserId walletWithUserId,Principal principal) {
+        User user = this.userService.findByEmail(principal.getName()).getData();
+        Wallet wallet = new Wallet(this.userService.findByUserId( user.getUserId()).getData(),walletWithUserId.getBalance(), walletWithUserId.getAccountType(),
+                walletWithUserId.getCurrency());
         return this.walletService.createWallet(wallet);
     }
 

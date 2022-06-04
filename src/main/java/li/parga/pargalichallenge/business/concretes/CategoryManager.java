@@ -28,7 +28,7 @@ public class CategoryManager implements CategoryService {
     public DataResult<Category> findByCategoryId(int categoryId) {
         var category = this.categoryDao.findByCategoryId(categoryId);
         if(category == null)
-            throw  new NotFoundException();
+            throw  new NotFoundException("Category doesn't exist");
         return new SuccessDataResult<>(category);
     }
 

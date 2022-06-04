@@ -8,12 +8,13 @@ import li.parga.pargalichallenge.entities.concretes.Wallet;
 import li.parga.pargalichallenge.entities.concretes.dto.WalletWithUserId;
 import org.springframework.stereotype.Service;
 
+import java.security.Principal;
 import java.util.List;
 
 @Service
 public class WalletManager implements WalletService {
     private li.parga.pargalichallenge.dataaccess.abstracts.WalletDao walletDao;
-    private UserDao userDao;
+    private final UserDao userDao;
 
     public WalletManager(li.parga.pargalichallenge.dataaccess.abstracts.WalletDao walletDao, UserDao userDao) {
         this.walletDao = walletDao;
@@ -21,9 +22,8 @@ public class WalletManager implements WalletService {
     }
 
     @Override
-    public DataResult<Wallet> createWallet(WalletWithUserId walletWithUserId) {
-        Wallet wallet = new Wallet(this.userDao.findByUserId(walletWithUserId.getUserId()), walletWithUserId.getBalance(), walletWithUserId.getAccountType(),
-                walletWithUserId.getCurrency());
+    public DataResult<Wallet> createWallet(Wallet wallet) {
+
         return new SuccessDataResult<>(this.walletDao.save(wallet));
     }
 

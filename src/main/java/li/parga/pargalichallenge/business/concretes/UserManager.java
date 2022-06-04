@@ -58,12 +58,11 @@ public class UserManager implements UserService, UserDetailsService {
 
     public DataResult<Object> addUser(UserWithoutWalletDto userWithoutWalletDto) {
 
-       if(userDao.findByEmail(userWithoutWalletDto.getEmail()) != null){
-            throw new NotUniqueException();
+        if (userDao.findByEmail(userWithoutWalletDto.getEmail()) != null) {
+            throw new NotUniqueException("email is not unique");
         }
         User user = new User(userWithoutWalletDto.getFirstName(), userWithoutWalletDto.getLastName(),
                 userWithoutWalletDto.getPassword(), userWithoutWalletDto.getEmail());
-
 
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -81,8 +80,8 @@ public class UserManager implements UserService, UserDetailsService {
     @Override
     public DataResult<User> findByEmail(String email) {
         var user = this.userDao.findByEmail(email);
-        if(user == null)
-            throw new NotFoundException();
+        if (user == null)
+            throw new NotFoundException("User Not Found");
         return new SuccessDataResult<>(user);
     }
 
@@ -95,8 +94,8 @@ public class UserManager implements UserService, UserDetailsService {
         return new SuccessDataResult<>(findByEmail(email).getData());
     }
 
-    public DataResult<WalletWithUserNameDto> findBalance(int userId) {
-        return new SuccessDataResult<>(this.userDao.findBalance(userId));
+    public DataResult<WalletWithUserNameDto> findBalance(String email) {
+        return new SuccessDataResult<>(this.userDao.findBalance(email));
     }
 
     @Override

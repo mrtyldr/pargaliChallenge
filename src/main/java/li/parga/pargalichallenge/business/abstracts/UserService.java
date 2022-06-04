@@ -15,7 +15,7 @@ public interface UserService {
 
     public DataResult<User> deleteUserByEmail(String email);
 
-    public DataResult<WalletWithUserNameDto> findBalance(int userId);
+    public DataResult<WalletWithUserNameDto> findBalance(String email);
 
     void save(User user);
 
