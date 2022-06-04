@@ -19,7 +19,7 @@ public class CategoryManager implements CategoryService {
 
     @Override
     public DataResult<Category> addCategory(Category category) {
-       return new SuccessDataResult<>(this.categoryDao.save(category));
+        return new SuccessDataResult<>(this.categoryDao.save(category));
     }
 
     @Override

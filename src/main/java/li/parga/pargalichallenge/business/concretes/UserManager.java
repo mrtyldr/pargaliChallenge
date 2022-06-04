@@ -3,6 +3,7 @@ package li.parga.pargalichallenge.business.concretes;
 
 import li.parga.pargalichallenge.business.abstracts.UserService;
 import li.parga.pargalichallenge.core.utilities.results.DataResult;
+import li.parga.pargalichallenge.core.utilities.results.ErrorDataResult;
 import li.parga.pargalichallenge.core.utilities.results.SuccessDataResult;
 import li.parga.pargalichallenge.dataaccess.abstracts.UserDao;
 
@@ -20,6 +21,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -34,7 +36,7 @@ public class UserManager implements UserService, UserDetailsService {
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserManager(UserDao userDao, WalletDao walletDao,PasswordEncoder passwordEncoder) {
+    public UserManager(UserDao userDao, WalletDao walletDao, PasswordEncoder passwordEncoder) {
         this.userDao = userDao;
         this.walletDao = walletDao;
         this.passwordEncoder = passwordEncoder;
@@ -42,31 +44,36 @@ public class UserManager implements UserService, UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user =  this.userDao.findByEmail(username);
-        if(user == null){
+        User user = this.userDao.findByEmail(username);
+        if (user == null) {
             log.error("User not found");
             throw new UsernameNotFoundException("User Not found");
         }
         Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority(user.getRole()));
-        return new org.springframework.security.core.userdetails.User(user.getEmail(),user.getPassword(), authorities);
+        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), authorities);
     }
 
-    public DataResult<User> addUser(UserWithoutWalletDto userWithoutWalletDto){
+    public DataResult<Object> addUser(UserWithoutWalletDto userWithoutWalletDto) {
 
-
+        if(userDao.findByEmail(userWithoutWalletDto.getEmail()) != null){
+            return new ErrorDataResult<>(userWithoutWalletDto.getEmail(),"email in use ");
+        }
         User user = new User(userWithoutWalletDto.getFirstName(), userWithoutWalletDto.getLastName(),
                 userWithoutWalletDto.getPassword(), userWithoutWalletDto.getEmail());
 
+
+
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         this.userDao.save(user);
-        Wallet wallet = new Wallet(user,0,"CASH","TRY");
+        Wallet wallet = new Wallet(user, 0, "CASH", "TRY");
         this.walletDao.save(wallet);
         return new SuccessDataResult<>(this.userDao.save(user));
     }
 
     @Override
-    public DataResult<User> findByUserId(int userId){return new SuccessDataResult<>( this.userDao.findByUserId(userId));
+    public DataResult<User> findByUserId(int userId) {
+        return new SuccessDataResult<>(this.userDao.findByUserId(userId));
     }
 
     @Override
@@ -74,7 +81,7 @@ public class UserManager implements UserService, UserDetailsService {
         return new SuccessDataResult<>(this.userDao.findByEmail(email));
     }
 
-    public  DataResult<User> deleteUserByEmail(String email){
+    public DataResult<User> deleteUserByEmail(String email) {
         //TODO: get wallet id
         var wallet = this.walletDao.findByUser_Email(email).stream().findFirst().get();
 
@@ -83,7 +90,7 @@ public class UserManager implements UserService, UserDetailsService {
         return new SuccessDataResult<>(findByEmail(email).getData());
     }
 
-    public DataResult<WalletWithUserNameDto> findBalance(int userId){
+    public DataResult<WalletWithUserNameDto> findBalance(int userId) {
         return new SuccessDataResult<>(this.userDao.findBalance(userId));
     }
 
@@ -91,7 +98,6 @@ public class UserManager implements UserService, UserDetailsService {
     public void save(User user) {
         this.userDao.save(user);
     }
-
 
 
 }

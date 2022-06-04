@@ -33,12 +33,12 @@ public class TransactionsManager implements TransactionService {
     public DataResult<TransactionWithWalletsId> makeTransaction(TransactionWithWalletsId transactionWithWalletsId) {
         Wallet wallet = this.walletDao.findByWalletId(transactionWithWalletsId.getWalletId());
         wallet.setBalance(wallet.getBalance() + transactionWithWalletsId.getAmount());
-        Transaction transaction =  new Transaction(transactionWithWalletsId.getAmount(), transactionWithWalletsId.getDate(),wallet,
+        Transaction transaction = new Transaction(transactionWithWalletsId.getAmount(), transactionWithWalletsId.getDate(), wallet,
                 this.categoryDao.findByCategoryId(transactionWithWalletsId.getCategoryId()));
         transactionsDao.save(transaction);
         walletDao.save(wallet);
 
-        return new SuccessDataResult<>(transactionWithWalletsId,"transaction has successfully been terminated");
+        return new SuccessDataResult<>(transactionWithWalletsId, "transaction has successfully been terminated");
     }
 
     @Override
@@ -47,7 +47,7 @@ public class TransactionsManager implements TransactionService {
     }
 
     @Override
-    public DataResult<List<Transaction> >search(String description) {
+    public DataResult<List<Transaction>> search(String description) {
         return new SuccessDataResult<>(this.transactionsDao.search(description));
     }
 

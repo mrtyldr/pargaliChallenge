@@ -9,11 +9,12 @@ import java.util.List;
 public interface TransactionService {
 
 
-DataResult<TransactionWithWalletsId> makeTransaction(TransactionWithWalletsId transactionWithWalletsId);
- List<Transaction> findAll();
+    DataResult<TransactionWithWalletsId> makeTransaction(TransactionWithWalletsId transactionWithWalletsId);
 
- DataResult<List<Transaction> >search(String description);
+    List<Transaction> findAll();
 
- DataResult<List<Transaction>> findAllOrderByDateAsc();
+    DataResult<List<Transaction>> search(String description);
+
+    DataResult<List<Transaction>> findAllOrderByDateAsc();
 
 }

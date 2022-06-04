@@ -33,7 +33,7 @@ public class Wallet {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(mappedBy = "wallet")
+    @OneToMany(mappedBy = "wallet",cascade = CascadeType.ALL)
     private List<Transaction> transactions;
 
     public Wallet(User user,double balance, String accountType, String currency) {

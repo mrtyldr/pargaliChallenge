@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface WalletDao extends JpaRepository<Wallet,Integer> {
+public interface WalletDao extends JpaRepository<Wallet, Integer> {
     Wallet findByWalletId(int walletId);
 
     Wallet findByUser_UserId(int userId);

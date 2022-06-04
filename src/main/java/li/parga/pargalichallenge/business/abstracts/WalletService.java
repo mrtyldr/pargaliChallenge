@@ -10,6 +10,7 @@ public interface WalletService {
     DataResult<Wallet> createWallet(WalletWithUserId walletWithUserId);
 
     DataResult<Wallet> findByUser_UserId(int userId);
+
     DataResult<List<Wallet>> findByUser_Email(String email);
 
 
