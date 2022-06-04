@@ -34,6 +34,10 @@ public class CategoryManager implements CategoryService {
 
     @Override
     public DataResult<List<Category>> findAll() {
-        return new SuccessDataResult<>(this.categoryDao.findAll());
+        var categories = this.categoryDao.findAll();
+        if(categories.size() == 0)
+            throw new NotFoundException("There is no predifined category. please add a category before continue");
+
+        return new SuccessDataResult<>(categories);
     }
 }
