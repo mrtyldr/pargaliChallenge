@@ -42,7 +42,7 @@ public class User {
     @Email
     @NotNull
     @NotBlank
-    @Column(name = "email")
+    @Column(name = "email",unique = true)
     private String email;
 
    /* @OneToMany(mappedBy = "user",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
