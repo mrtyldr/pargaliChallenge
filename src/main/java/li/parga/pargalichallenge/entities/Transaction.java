@@ -1,4 +1,4 @@
-package li.parga.pargalichallenge.entities.concretes;
+package li.parga.pargalichallenge.entities;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;

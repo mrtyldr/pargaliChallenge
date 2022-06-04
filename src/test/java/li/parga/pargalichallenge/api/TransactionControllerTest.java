@@ -1,11 +1,10 @@
 package li.parga.pargalichallenge.api;
 
-import li.parga.pargalichallenge.business.concretes.CategoryManager;
-import li.parga.pargalichallenge.business.concretes.TransactionsManager;
-import li.parga.pargalichallenge.business.concretes.UserManager;
-import li.parga.pargalichallenge.entities.concretes.Category;
-import li.parga.pargalichallenge.entities.concretes.dto.TransactionWithWalletsId;
-import li.parga.pargalichallenge.entities.concretes.dto.UserWithoutWalletDto;
+import li.parga.pargalichallenge.service.CategoryService;
+import li.parga.pargalichallenge.service.TransactionService;
+import li.parga.pargalichallenge.service.UserService;
+import li.parga.pargalichallenge.entities.Category;
+import li.parga.pargalichallenge.entities.dto.UserWithoutWalletDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -15,9 +14,6 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.Date;
-
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -30,23 +26,23 @@ class TransactionControllerTest {
     private MockMvc mockMvc;
 
     @Autowired
-    private TransactionsManager transactionsManager;
+    private TransactionService transactionService;
     @Autowired
-    private UserManager userManager;
+    private UserService userService;
     @Autowired
-    private CategoryManager categoryManager;
+    private CategoryService categoryService;
 
 
     @Test
     @WithMockUser("osman@parga.li")
     public void should_return_negative_balance_exception() throws Exception{
-        userManager.addUser(new UserWithoutWalletDto(
+        userService.addUser(new UserWithoutWalletDto(
                 "osman",
                 "osmancik",
                 "123456",
                 "osman@parga.li"
         ));
-        categoryManager.addCategory(new Category(1,"salary"));
+        categoryService.addCategory(new Category(1,"salary"));
         String request = "{\n" +
                 "  \"amount\": -100,\n" +
                 "  \"date\": \"2022-06-04\",\n" +
@@ -63,7 +59,7 @@ class TransactionControllerTest {
     @Test
     @WithMockUser("osman@parga.li")
     public void should_throw_not_found_exception() throws Exception {
-        userManager.addUser(new UserWithoutWalletDto(
+        userService.addUser(new UserWithoutWalletDto(
                 "osman",
                 "osmancik",
                 "123456",
@@ -85,13 +81,13 @@ class TransactionControllerTest {
     @Test
     @WithMockUser("osman@parga.li")
     public void should_make_transaction() throws Exception{
-        userManager.addUser(new UserWithoutWalletDto(
+        userService.addUser(new UserWithoutWalletDto(
                 "osman",
                 "osmancik",
                 "123456",
                 "osman@parga.li"
         ));
-        categoryManager.addCategory(new Category(1,"salary"));
+        categoryService.addCategory(new Category(1,"salary"));
         String request = "{\n" +
                 "  \"amount\": 100,\n" +
                 "  \"date\": \"2022-06-04\",\n" +

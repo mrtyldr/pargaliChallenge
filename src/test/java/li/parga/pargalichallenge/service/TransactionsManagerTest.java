@@ -1,4 +1,4 @@
-package li.parga.pargalichallenge.business.concretes;
+package li.parga.pargalichallenge.service;
 
 import static org.junit.jupiter.api.Assertions.*;
 

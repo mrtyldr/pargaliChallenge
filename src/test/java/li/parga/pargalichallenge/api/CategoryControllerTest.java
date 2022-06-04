@@ -1,17 +1,14 @@
 package li.parga.pargalichallenge.api;
 
-import li.parga.pargalichallenge.business.abstracts.CategoryService;
-import li.parga.pargalichallenge.business.abstracts.UserService;
-import li.parga.pargalichallenge.business.concretes.CategoryManager;
-import li.parga.pargalichallenge.business.concretes.UserManager;
 import li.parga.pargalichallenge.core.utilities.results.SuccessDataResult;
-import li.parga.pargalichallenge.entities.concretes.Category;
-import li.parga.pargalichallenge.entities.concretes.dto.UserWithoutWalletDto;
+import li.parga.pargalichallenge.entities.Category;
+import li.parga.pargalichallenge.entities.dto.UserWithoutWalletDto;
+import li.parga.pargalichallenge.service.CategoryService;
+import li.parga.pargalichallenge.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
@@ -32,10 +29,10 @@ public class CategoryControllerTest {
     private MockMvc mockMvc;
 
     @Autowired
-    private UserManager userManager;
+    private UserService userService;
 
     @Autowired
-    private CategoryManager categoryService;
+    private CategoryService categoryService;
 
     @Test
     @WithMockUser("osman@parga.li")
@@ -52,10 +49,11 @@ public class CategoryControllerTest {
 
     }
 
+
     @Test
     @WithMockUser("osman@parga.li")
     public void should_return_not_found_when_categories_null() throws Exception {
-        userManager.addUser(new UserWithoutWalletDto(
+        userService.addUser(new UserWithoutWalletDto(
                 "osman",
                 "osmancik",
                 "123456",
@@ -69,7 +67,7 @@ public class CategoryControllerTest {
     @Test
     @WithMockUser("osman@parga.li")
     public void should_return_categories() throws Exception {
-        userManager.addUser(new UserWithoutWalletDto(
+        userService.addUser(new UserWithoutWalletDto(
                 "osman",
                 "osmancik",
                 "123456",

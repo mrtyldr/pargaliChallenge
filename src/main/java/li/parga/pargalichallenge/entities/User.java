@@ -1,10 +1,9 @@
-package li.parga.pargalichallenge.entities.concretes;
+package li.parga.pargalichallenge.entities;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.*;
 import javax.validation.constraints.Email;

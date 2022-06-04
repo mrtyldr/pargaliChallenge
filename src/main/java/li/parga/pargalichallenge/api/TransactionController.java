@@ -1,13 +1,12 @@
 package li.parga.pargalichallenge.api;
 
-import li.parga.pargalichallenge.business.abstracts.CategoryService;
-import li.parga.pargalichallenge.business.abstracts.TransactionService;
-import li.parga.pargalichallenge.business.abstracts.UserService;
+
 import li.parga.pargalichallenge.core.utilities.results.DataResult;
-import li.parga.pargalichallenge.entities.concretes.Transaction;
-import li.parga.pargalichallenge.entities.concretes.dto.TransactionWithWalletsId;
+import li.parga.pargalichallenge.entities.Transaction;
+
+import li.parga.pargalichallenge.entities.dto.TransactionWithWalletsId;
+import li.parga.pargalichallenge.service.TransactionService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,10 +27,7 @@ public class TransactionController {
         return this.transactionService.findAll();
     }
 
-    @GetMapping("/api/search")
-    public DataResult<List<Transaction>> search(String description) {
-        return this.transactionService.search(description);
-    }
+
 
     @GetMapping("/api/transactions/asc")
     public DataResult<List<Transaction>> findAllOrderByDateAsc() {

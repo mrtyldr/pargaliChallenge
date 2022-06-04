@@ -1,4 +1,4 @@
-package li.parga.pargalichallenge.entities.concretes.dto;
+package li.parga.pargalichallenge.entities.dto;
 
 
 import lombok.AllArgsConstructor;

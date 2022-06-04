@@ -1,9 +1,9 @@
 package li.parga.pargalichallenge.api;
 
 
-import li.parga.pargalichallenge.business.abstracts.CategoryService;
 import li.parga.pargalichallenge.core.utilities.results.DataResult;
-import li.parga.pargalichallenge.entities.concretes.Category;
+import li.parga.pargalichallenge.entities.Category;
+import li.parga.pargalichallenge.service.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

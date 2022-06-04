@@ -1,9 +1,9 @@
-package li.parga.pargalichallenge.entities.concretes;
+package li.parga.pargalichallenge.entities;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
-import org.hibernate.mapping.Join;
+
 import java.util.List;
 import javax.persistence.*;
 

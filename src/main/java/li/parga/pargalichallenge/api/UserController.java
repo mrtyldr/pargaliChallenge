@@ -1,23 +1,22 @@
 package li.parga.pargalichallenge.api;
 
 
-import li.parga.pargalichallenge.business.abstracts.UserService;
-import li.parga.pargalichallenge.business.abstracts.WalletService;
 import li.parga.pargalichallenge.core.utilities.results.DataResult;
 import li.parga.pargalichallenge.core.utilities.results.ErrorDataResult;
-import li.parga.pargalichallenge.entities.concretes.User;
-import li.parga.pargalichallenge.entities.concretes.Wallet;
-import li.parga.pargalichallenge.entities.concretes.dto.UserWithoutWalletDto;
-import li.parga.pargalichallenge.entities.concretes.dto.WalletWithUserId;
-import li.parga.pargalichallenge.entities.concretes.dto.WalletWithUserNameDto;
-import li.parga.pargalichallenge.exceptions.NotFoundException;
+import li.parga.pargalichallenge.entities.User;
+import li.parga.pargalichallenge.entities.Wallet;
+import li.parga.pargalichallenge.entities.dto.UserWithoutWalletDto;
+
+import li.parga.pargalichallenge.entities.dto.WalletWithUserId;
+import li.parga.pargalichallenge.entities.dto.WalletWithUserNameDto;
+import li.parga.pargalichallenge.service.UserService;
+import li.parga.pargalichallenge.service.WalletService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.context.request.WebRequest;
 
 import javax.validation.Valid;
 import java.security.Principal;
@@ -65,7 +64,7 @@ public class UserController {
     }
 
     @PostMapping("api/wallets")
-    public DataResult<Wallet> addWallet(@RequestBody WalletWithUserId walletWithUserId,Principal principal) {
+    public DataResult<Wallet> addWallet(@RequestBody WalletWithUserId walletWithUserId, Principal principal) {
         User user = this.userService.findByEmail(principal.getName()).getData();
         Wallet wallet = new Wallet(this.userService.findByUserId( user.getUserId()).getData(),walletWithUserId.getBalance(), walletWithUserId.getAccountType(),
                 walletWithUserId.getCurrency());

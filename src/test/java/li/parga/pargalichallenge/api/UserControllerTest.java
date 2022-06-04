@@ -1,7 +1,7 @@
 package li.parga.pargalichallenge.api;
 
-import li.parga.pargalichallenge.business.concretes.UserManager;
-import li.parga.pargalichallenge.entities.concretes.dto.UserWithoutWalletDto;
+import li.parga.pargalichallenge.service.UserService;
+import li.parga.pargalichallenge.entities.dto.UserWithoutWalletDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -23,7 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class UserControllerTest {
 
     @Autowired
-    UserManager userManager;
+    UserService userService;
 
     @Autowired
     MockMvc mockMvc;
@@ -39,7 +39,7 @@ class UserControllerTest {
     @WithMockUser(username = "hakan@parga.li")
     void should_get_wallets() throws Exception {
         // given
-        userManager.addUser(new UserWithoutWalletDto(
+        userService.addUser(new UserWithoutWalletDto(
                 "hakan",
                 "baykuşlar",
                 "123456",
@@ -68,7 +68,7 @@ class UserControllerTest {
     @WithMockUser(username = "hakan@parga.li")
     void should_get_user() throws Exception {
         // given
-        userManager.addUser(new UserWithoutWalletDto(
+        userService.addUser(new UserWithoutWalletDto(
                 "hakan",
                 "baykuşlar",
                 "123456",

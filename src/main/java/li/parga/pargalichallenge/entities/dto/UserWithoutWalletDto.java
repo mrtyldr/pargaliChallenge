@@ -1,9 +1,8 @@
-package li.parga.pargalichallenge.entities.concretes.dto;
+package li.parga.pargalichallenge.entities.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;

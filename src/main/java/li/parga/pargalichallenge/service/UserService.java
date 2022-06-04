@@ -1,17 +1,17 @@
-package li.parga.pargalichallenge.business.concretes;
+package li.parga.pargalichallenge.service;
 
 
-import li.parga.pargalichallenge.business.abstracts.UserService;
+
 import li.parga.pargalichallenge.core.utilities.results.DataResult;
-import li.parga.pargalichallenge.core.utilities.results.ErrorDataResult;
 import li.parga.pargalichallenge.core.utilities.results.SuccessDataResult;
-import li.parga.pargalichallenge.dataaccess.abstracts.UserDao;
+import li.parga.pargalichallenge.entities.dto.WalletWithUserNameDto;
+import li.parga.pargalichallenge.repository.UserRepository;
 
-import li.parga.pargalichallenge.dataaccess.abstracts.WalletDao;
-import li.parga.pargalichallenge.entities.concretes.User;
-import li.parga.pargalichallenge.entities.concretes.Wallet;
-import li.parga.pargalichallenge.entities.concretes.dto.UserWithoutWalletDto;
-import li.parga.pargalichallenge.entities.concretes.dto.WalletWithUserNameDto;
+import li.parga.pargalichallenge.repository.WalletRepository;
+import li.parga.pargalichallenge.entities.User;
+import li.parga.pargalichallenge.entities.Wallet;
+import li.parga.pargalichallenge.entities.dto.UserWithoutWalletDto;
+
 import li.parga.pargalichallenge.exceptions.NotFoundException;
 import li.parga.pargalichallenge.exceptions.NotUniqueException;
 import lombok.extern.slf4j.Slf4j;
@@ -23,7 +23,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.validation.annotation.Validated;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -31,22 +30,22 @@ import java.util.Collection;
 
 @Service
 @Slf4j
-public class UserManager implements UserService, UserDetailsService {
-    private final UserDao userDao;
+public class UserService implements UserDetailsService {
+    private final UserRepository userRepository;
 
-    private final WalletDao walletDao;
+    private final WalletRepository walletRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserManager(UserDao userDao, WalletDao walletDao, PasswordEncoder passwordEncoder) {
-        this.userDao = userDao;
-        this.walletDao = walletDao;
+    public UserService(UserRepository userRepository, WalletRepository walletRepository, PasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.walletRepository = walletRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = this.userDao.findByEmail(username);
+        User user = this.userRepository.findByEmail(username);
         if (user == null) {
             log.error("User not found");
             throw new UsernameNotFoundException("User Not found");
@@ -58,7 +57,7 @@ public class UserManager implements UserService, UserDetailsService {
 
     public DataResult<Object> addUser(UserWithoutWalletDto userWithoutWalletDto) {
 
-        if (userDao.findByEmail(userWithoutWalletDto.getEmail()) != null) {
+        if (userRepository.findByEmail(userWithoutWalletDto.getEmail()) != null) {
             throw new NotUniqueException("email is not unique");
         }
         User user = new User(userWithoutWalletDto.getFirstName(), userWithoutWalletDto.getLastName(),
@@ -66,20 +65,20 @@ public class UserManager implements UserService, UserDetailsService {
 
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        this.userDao.save(user);
+        this.userRepository.save(user);
         Wallet wallet = new Wallet(user, 0, "CASH", "TRY");
-        this.walletDao.save(wallet);
-        return new SuccessDataResult<>(this.userDao.save(user));
+        this.walletRepository.save(wallet);
+        return new SuccessDataResult<>(this.userRepository.save(user));
     }
 
-    @Override
+
     public DataResult<User> findByUserId(int userId) {
-        return new SuccessDataResult<>(this.userDao.findByUserId(userId));
+        return new SuccessDataResult<>(this.userRepository.findByUserId(userId));
     }
 
-    @Override
+
     public DataResult<User> findByEmail(String email) {
-        var user = this.userDao.findByEmail(email);
+        var user = this.userRepository.findByEmail(email);
         if (user == null)
             throw new NotFoundException("User Not Found");
         return new SuccessDataResult<>(user);
@@ -87,20 +86,20 @@ public class UserManager implements UserService, UserDetailsService {
 
     public DataResult<User> deleteUserByEmail(String email) {
         //TODO: get wallet id
-        var wallet = this.walletDao.findByUser_Email(email).stream().findFirst().get();
+        var wallet = this.walletRepository.findByUser_Email(email).stream().findFirst().get();
 
-        this.walletDao.delete(wallet);
-        this.userDao.delete(findByEmail(email).getData());
+        this.walletRepository.delete(wallet);
+        this.userRepository.delete(findByEmail(email).getData());
         return new SuccessDataResult<>(findByEmail(email).getData());
     }
 
     public DataResult<WalletWithUserNameDto> findBalance(String email) {
-        return new SuccessDataResult<>(this.userDao.findBalance(email));
+        return new SuccessDataResult<>(this.userRepository.findBalance(email));
     }
 
-    @Override
+
     public void save(User user) {
-        this.userDao.save(user);
+        this.userRepository.save(user);
     }
 
 

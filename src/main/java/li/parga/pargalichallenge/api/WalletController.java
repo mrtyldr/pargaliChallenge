@@ -1,6 +1,6 @@
 package li.parga.pargalichallenge.api;
 
-import li.parga.pargalichallenge.business.abstracts.WalletService;
+import li.parga.pargalichallenge.service.WalletService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
