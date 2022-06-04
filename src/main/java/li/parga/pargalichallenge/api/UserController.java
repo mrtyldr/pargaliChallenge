@@ -32,7 +32,7 @@ public class UserController {
     private final WalletService walletService;
 
 
-    @PostMapping("/api/users")
+    @PostMapping("/api/user")
     @ResponseStatus(HttpStatus.OK)
     public DataResult<Object> addUser(@RequestBody @Valid UserWithoutWalletDto user) {
         return this.userService.addUser(user);
@@ -49,9 +49,9 @@ public class UserController {
     }
 
 
-    @DeleteMapping("/api/users/email")
-    public DataResult<User> deleteUserByEmail(String email) {
-        return this.userService.deleteUserByEmail(email);
+    @DeleteMapping("/api/user")
+    public DataResult<User> deleteUserByEmail(Principal principal) {
+        return this.userService.deleteUserByEmail(principal.getName());
     }
 
     @GetMapping("/api/user/balance")

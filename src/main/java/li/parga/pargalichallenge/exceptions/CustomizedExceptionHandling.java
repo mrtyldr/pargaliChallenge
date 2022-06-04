@@ -28,6 +28,7 @@ public class CustomizedExceptionHandling extends ResponseEntityExceptionHandler 
         return new ResponseEntity<>(dataResult, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(NegativeBalanceException.class)
     ResponseEntity<Object> handleNegativeBalance(NegativeBalanceException exception) {
         ErrorResult dataResult = new ErrorResult(exception.getMessage());
 

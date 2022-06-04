@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
@@ -19,7 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
-class   UserControllerTest {
+class UserControllerTest {
 
     @Autowired
     UserManager userManager;
@@ -99,10 +100,20 @@ class   UserControllerTest {
                         }
                         """));
     }
+
     @Test
     void should_return_bad_request_for_invalid_email() throws Exception {
-        UserWithoutWalletDto user = new UserWithoutWalletDto("ahmet","mehmet","123456","aks");
-            mockMvc.perform(post("/api/users",user))
-                    .andExpect(status().isBadRequest());
+        var request = "{\n" +
+                "  \"firstName\": \"osman\",\n" +
+                "  \"lastName\": \"osmancik\",\n" +
+                "  \"password\": \"123456\",\n" +
+                "  \"email\": \"osman\"\n" +
+                "}";
+
+        mockMvc.perform(post("/api/users")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(request)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
     }
 }

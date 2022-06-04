@@ -37,6 +37,8 @@ public class TransactionsManager implements TransactionService {
         if (wallet.getBalance() + transactionWithWalletsId.getAmount() < 0) {
             throw new NegativeBalanceException("You don't have enough money for carrying this transaction out");
         }
+        if(categoryDao.findByCategoryId(transactionWithWalletsId.getCategoryId())==null)
+            throw new NotFoundException("category doesn't exist please create a category before continue");
         wallet.setBalance(wallet.getBalance() + transactionWithWalletsId.getAmount());
         Transaction transaction = new Transaction(transactionWithWalletsId.getAmount(), transactionWithWalletsId.getDate(), wallet,
                 this.categoryDao.findByCategoryId(transactionWithWalletsId.getCategoryId()));

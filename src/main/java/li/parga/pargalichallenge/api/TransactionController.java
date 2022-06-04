@@ -16,11 +16,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TransactionController {
     private final TransactionService transactionService;
-    private final UserService userService;
-    private final CategoryService categoryService;
 
 
-    @PostMapping("/api/transactions")
+    @PostMapping("/api/transaction")
     public DataResult<TransactionWithWalletsId> makeTransaction(@RequestBody TransactionWithWalletsId transactionWithWalletsId) {
         return this.transactionService.makeTransaction(transactionWithWalletsId);
     }
