@@ -1,5 +1,6 @@
 package li.parga.pargalichallenge.service;
 
+import li.parga.pargalichallenge.exceptions.NotFoundException;
 import li.parga.pargalichallenge.repository.AccountRepository;
 import li.parga.pargalichallenge.core.utilities.results.DataResult;
 import li.parga.pargalichallenge.core.utilities.results.SuccessDataResult;
@@ -20,7 +21,7 @@ public class AccountService {
     }
 
 
-    public DataResult<Account> createWallet(Account account) {
+    public DataResult<Account> createAccount(Account account) {
 
         return new SuccessDataResult<>(this.accountRepository.save(account));
     }
@@ -33,5 +34,13 @@ public class AccountService {
 
     public DataResult<List<Account>> findByUser_Email(String email) {
         return new SuccessDataResult<>(this.accountRepository.findByUser_Email(email));
+    }
+
+    public DataResult<Object> deleteAccount(int accountId,String email){
+        Account account = this.accountRepository.findByAccountId(accountId);
+        if(account.getUser() != userRepository.findByEmail(email) | account == null){
+            throw new NotFoundException("You don't have an account that has account id: " + accountId);
+        }
+        return new SuccessDataResult<>("account with id:" + accountId +" has succesfully been deleted.");
     }
 }

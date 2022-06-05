@@ -12,13 +12,13 @@ import javax.persistence.*;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "wallets")
+@Table(name = "accounts")
 @JsonIgnoreProperties({"user","transactions"})
 public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "wallet_id")
-    private int walletId;
+    @Column(name = "account_id")
+    private int accountId;
 
     @Column(name = "balance")
     private double balance;
@@ -33,7 +33,7 @@ public class Account {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(mappedBy = "wallet",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "account",cascade = CascadeType.ALL)
     private List<Transaction> transactions;
 
     public Account(User user, double balance, String accountType, String currency) {

@@ -3,7 +3,6 @@ package li.parga.pargalichallenge.api;
 
 import li.parga.pargalichallenge.core.utilities.results.DataResult;
 import li.parga.pargalichallenge.core.utilities.results.ErrorDataResult;
-import li.parga.pargalichallenge.core.utilities.results.SuccessDataResult;
 import li.parga.pargalichallenge.entities.User;
 import li.parga.pargalichallenge.entities.Account;
 import li.parga.pargalichallenge.entities.dto.UserWithoutAccountDto;
@@ -60,22 +59,25 @@ public class UserController {
     }
 
     @GetMapping("/api/accounts")
-    public DataResult<List<Account>> getWallet(Principal principal) {
+    public DataResult<List<Account>> getAccounts(Principal principal) {
         return this.accountService.findByUser_Email(principal.getName());
     }
 
     @PostMapping("api/account")
-    public DataResult<Account> addWallet(@RequestBody AccountWithUserId accountWithUserId, Principal principal) {
+    public DataResult<Account> addAccount(@RequestBody AccountWithUserId accountWithUserId, Principal principal) {
         User user = this.userService.findByEmail(principal.getName()).getData();
         Account account = new Account(this.userService.findByUserId( user.getUserId()).getData(), accountWithUserId.getBalance(), accountWithUserId.getAccountType(),
                 accountWithUserId.getCurrency());
-        return this.accountService.createWallet(account);
+        return this.accountService.createAccount(account);
     }
 
     @DeleteMapping("/api/account")
-    public DataResult<Object> deleteWallet(String accountType,Principal principal){
-        return new SuccessDataResult<>();
+    public DataResult<Object> deleteAccount(int accountId,Principal principal){
+        return this.accountService.deleteAccount(accountId, principal.getName());
     }
+
+
+
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     ResponseEntity<Object> handleNotValidExceptions(MethodArgumentNotValidException ex){

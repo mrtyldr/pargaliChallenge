@@ -14,7 +14,7 @@ public class TransactionWithAccountId {
 
     private Date date;
 
-    private int WalletId;
+    private int accountId;
 
     private int categoryId;
 

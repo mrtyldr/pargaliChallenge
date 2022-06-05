@@ -32,7 +32,7 @@ public class Transaction {
     private Date date;
 
     @ManyToOne
-    @JoinColumn(name = "wallet_id")
+    @JoinColumn(name = "account_id")
     private Account account;
 
     @ManyToOne
