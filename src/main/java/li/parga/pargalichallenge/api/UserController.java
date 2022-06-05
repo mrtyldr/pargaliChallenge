@@ -40,11 +40,7 @@ public class UserController {
     @GetMapping("/api/user")
     @ResponseStatus(code = HttpStatus.OK)
     DataResult<User> findByUserId(Principal principal) {
-        var result = userService.findByEmail(principal.getName());
-        /*if (result.getData() == null)
-            throw new NotFoundException();*/
-
-        return result;
+        return userService.findByEmail(principal.getName());
     }
 
 
@@ -64,28 +60,26 @@ public class UserController {
     }
 
     @PostMapping("api/account")
-    public DataResult<Account> addAccount(@RequestBody AccountWithUserId accountWithUserId, Principal principal) {
+    public DataResult<Account> addAccount(@RequestBody @Valid AccountWithUserId accountWithUserId, Principal principal) {
         User user = this.userService.findByEmail(principal.getName()).getData();
-        Account account = new Account(this.userService.findByUserId( user.getUserId()).getData(), accountWithUserId.getBalance(), accountWithUserId.getAccountType(),
+        Account account = new Account(this.userService.findByUserId(user.getUserId()).getData(), accountWithUserId.getBalance(), accountWithUserId.getAccountType(),
                 accountWithUserId.getCurrency());
         return this.accountService.createAccount(account);
     }
 
     @DeleteMapping("/api/account")
-    public DataResult<Object> deleteAccount(int accountId,Principal principal){
+    public DataResult<Object> deleteAccount(int accountId, Principal principal) {
         return this.accountService.deleteAccount(accountId, principal.getName());
     }
 
 
-
-
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    ResponseEntity<Object> handleNotValidExceptions(MethodArgumentNotValidException ex){
-        Map <String,String>validationErrors = new HashMap<>();
-        for (FieldError fieldError: ex.getBindingResult().getFieldErrors()) {
+    ResponseEntity<Object> handleNotValidExceptions(MethodArgumentNotValidException ex) {
+        Map<String, String> validationErrors = new HashMap<>();
+        for (FieldError fieldError : ex.getBindingResult().getFieldErrors()) {
             validationErrors.put(fieldError.getField(), fieldError.getDefaultMessage());
         }
-        return new ResponseEntity<>(new ErrorDataResult<Object>(validationErrors,"Validation Errors"),HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(new ErrorDataResult<Object>(validationErrors, "Validation Errors"), HttpStatus.BAD_REQUEST);
     }
 
 
