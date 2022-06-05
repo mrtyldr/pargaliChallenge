@@ -1,7 +1,7 @@
 package li.parga.pargalichallenge.api;
 
 import li.parga.pargalichallenge.service.UserService;
-import li.parga.pargalichallenge.entities.dto.UserWithoutWalletDto;
+import li.parga.pargalichallenge.entities.dto.UserWithoutAccountDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -12,8 +12,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -39,7 +38,7 @@ class UserControllerTest {
     @WithMockUser(username = "hakan@parga.li")
     void should_get_wallets() throws Exception {
         // given
-        userService.addUser(new UserWithoutWalletDto(
+        userService.addUser(new UserWithoutAccountDto(
                 "hakan",
                 "baykuşlar",
                 "123456",
@@ -61,14 +60,14 @@ class UserControllerTest {
                               ]
                         }
                         """));
-        ;
+
     }
 
     @Test
     @WithMockUser(username = "hakan@parga.li")
     void should_get_user() throws Exception {
         // given
-        userService.addUser(new UserWithoutWalletDto(
+        userService.addUser(new UserWithoutAccountDto(
                 "hakan",
                 "baykuşlar",
                 "123456",
@@ -115,5 +114,61 @@ class UserControllerTest {
                         .content(request)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @WithMockUser("osman@parga.li")
+    public void should_return_not_found_for_invalid_wallet_id() throws Exception {
+        userService.addUser(new UserWithoutAccountDto(
+                "osman",
+                "osmancik",
+                "123456",
+                "osman@parga.li"
+        ));
+        userService.addUser(new UserWithoutAccountDto(
+                "Ahmet",
+                "Hakan",
+                "123456",
+                "ahmet@hakan.com"
+        ));
+        mockMvc.perform(delete("/api/account?accountId=2"))
+                .andExpect(status().isNotFound());
+
+    }
+
+    @Test
+    @WithMockUser("osman@parga.li")
+    public void should_return_internal_server_error_for_non_exist_wallet() throws Exception {
+        userService.addUser(new UserWithoutAccountDto(
+                "osman",
+                "osmancik",
+                "123456",
+                "osman@parga.li"
+        ));
+
+        mockMvc.perform(delete("/api/account?accountId=2"))
+                .andExpect(status().isInternalServerError());
+
+    }
+
+    @Test
+    @WithMockUser("osman@parga.li")
+    public void should_delete_account() throws Exception {
+        userService.addUser(new UserWithoutAccountDto(
+                "osman",
+                "osmancik",
+                "123456",
+                "osman@parga.li"
+        ));
+
+        mockMvc.perform(delete("/api/account?accountId=1"))
+                .andExpect(status().isOk())
+                .andExpect(content().json("""
+                          {
+                          "success": true,
+                          "message": null,
+                          "data": "account with id:1 has succesfully been deleted."
+                        }
+                        """));
     }
 }

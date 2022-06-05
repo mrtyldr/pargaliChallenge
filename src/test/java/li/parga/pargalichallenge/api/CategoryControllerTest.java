@@ -2,7 +2,7 @@ package li.parga.pargalichallenge.api;
 
 import li.parga.pargalichallenge.core.utilities.results.SuccessDataResult;
 import li.parga.pargalichallenge.entities.Category;
-import li.parga.pargalichallenge.entities.dto.UserWithoutWalletDto;
+import li.parga.pargalichallenge.entities.dto.UserWithoutAccountDto;
 import li.parga.pargalichallenge.service.CategoryService;
 import li.parga.pargalichallenge.service.UserService;
 import org.junit.jupiter.api.Test;
@@ -53,7 +53,7 @@ public class CategoryControllerTest {
     @Test
     @WithMockUser("osman@parga.li")
     public void should_return_not_found_when_categories_null() throws Exception {
-        userService.addUser(new UserWithoutWalletDto(
+        userService.addUser(new UserWithoutAccountDto(
                 "osman",
                 "osmancik",
                 "123456",
@@ -67,7 +67,7 @@ public class CategoryControllerTest {
     @Test
     @WithMockUser("osman@parga.li")
     public void should_return_categories() throws Exception {
-        userService.addUser(new UserWithoutWalletDto(
+        userService.addUser(new UserWithoutAccountDto(
                 "osman",
                 "osmancik",
                 "123456",

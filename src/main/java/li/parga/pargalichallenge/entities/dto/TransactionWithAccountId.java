@@ -9,12 +9,12 @@ import java.util.Date;
 
 @Data
 @AllArgsConstructor
-public class TransactionWithWalletsId {
+public class TransactionWithAccountId {
     private double amount;
 
     private Date date;
 
-    private int WalletId;
+    private int accountId;
 
     private int categoryId;
 

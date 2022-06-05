@@ -48,7 +48,7 @@ public class User {
     private List<Transaction> transactions;*/
 
     @OneToMany(mappedBy = "user")
-    private List<Wallet> wallets;
+    private List<Account> accounts;
 
     @Column(name = "role")
     private String role = "USER";

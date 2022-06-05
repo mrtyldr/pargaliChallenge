@@ -3,7 +3,7 @@ package li.parga.pargalichallenge.service;
 
 import li.parga.pargalichallenge.core.utilities.results.SuccessDataResult;
 import li.parga.pargalichallenge.repository.UserRepository;
-import li.parga.pargalichallenge.repository.WalletRepository;
+import li.parga.pargalichallenge.repository.AccountRepository;
 import li.parga.pargalichallenge.entities.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,7 +16,7 @@ import static org.mockito.Mockito.*;
 public class UserServiceTest {
 
     private UserRepository userRepository;
-    private WalletRepository walletRepository;
+    private AccountRepository accountRepository;
     private UserService userService;
 
     private PasswordEncoder passwordEncoder;
@@ -24,9 +24,9 @@ public class UserServiceTest {
     @BeforeEach
     public void setUp() {
         userRepository = mock(UserRepository.class);
-        walletRepository = mock(WalletRepository.class);
+        accountRepository = mock(AccountRepository.class);
         passwordEncoder = mock(PasswordEncoder.class);
-        userService = new UserService(userRepository, walletRepository,passwordEncoder);
+        userService = new UserService(userRepository, accountRepository,passwordEncoder);
     }
 
     @Test

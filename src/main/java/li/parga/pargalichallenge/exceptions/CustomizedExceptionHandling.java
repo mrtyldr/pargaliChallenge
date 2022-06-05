@@ -35,5 +35,12 @@ public class CustomizedExceptionHandling extends ResponseEntityExceptionHandler 
         return new ResponseEntity<>(dataResult, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(NullPointerException.class)
+    ResponseEntity<Object> handleNullPointerException(NullPointerException exception){
+        ErrorResult result = new ErrorResult(exception.getMessage());
+
+        return new ResponseEntity<>(result,HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
 
 }

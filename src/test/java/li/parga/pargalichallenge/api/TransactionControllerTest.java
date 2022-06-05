@@ -4,7 +4,7 @@ import li.parga.pargalichallenge.service.CategoryService;
 import li.parga.pargalichallenge.service.TransactionService;
 import li.parga.pargalichallenge.service.UserService;
 import li.parga.pargalichallenge.entities.Category;
-import li.parga.pargalichallenge.entities.dto.UserWithoutWalletDto;
+import li.parga.pargalichallenge.entities.dto.UserWithoutAccountDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -36,7 +36,7 @@ class TransactionControllerTest {
     @Test
     @WithMockUser("osman@parga.li")
     public void should_return_negative_balance_exception() throws Exception{
-        userService.addUser(new UserWithoutWalletDto(
+        userService.addUser(new UserWithoutAccountDto(
                 "osman",
                 "osmancik",
                 "123456",
@@ -59,7 +59,7 @@ class TransactionControllerTest {
     @Test
     @WithMockUser("osman@parga.li")
     public void should_throw_not_found_exception() throws Exception {
-        userService.addUser(new UserWithoutWalletDto(
+        userService.addUser(new UserWithoutAccountDto(
                 "osman",
                 "osmancik",
                 "123456",
@@ -81,7 +81,7 @@ class TransactionControllerTest {
     @Test
     @WithMockUser("osman@parga.li")
     public void should_make_transaction() throws Exception{
-        userService.addUser(new UserWithoutWalletDto(
+        userService.addUser(new UserWithoutAccountDto(
                 "osman",
                 "osmancik",
                 "123456",
