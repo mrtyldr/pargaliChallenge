@@ -27,6 +27,7 @@ class UserControllerTest {
     @Autowired
     MockMvc mockMvc;
 
+
     @Test
     @WithMockUser(username = "osman@parga.li")
     void should_return_not_found_for_invalid_user() throws Exception {
@@ -48,16 +49,21 @@ class UserControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().json("""
                         {
-                           "success":true,
-                           "message":null,
-                           "data":[
-                                 {
-                                    "accountId":1,
-                                    "balance":0.0,
-                                    "accountType":"CASH",
-                                    "currency":"TRY"
-                                 }
-                              ]
+                          "success": true,
+                          "message": null,
+                          "data": {
+                            "firstName": "hakan",
+                            "lastName": "baykuşlar",
+                            "accounts": [
+                              {
+                                "accountId": 1,
+                                "balance": 0,
+                                "accountType": "CASH",
+                                "currency": "TRY"
+                              }
+                            ],
+                            "total": "0.0 TRY"
+                          }
                         }
                         """));
 

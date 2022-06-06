@@ -2,16 +2,14 @@ package li.parga.pargalichallenge.api;
 
 
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import li.parga.pargalichallenge.core.utilities.CalculateTotal;
 import li.parga.pargalichallenge.core.utilities.results.DataResult;
 import li.parga.pargalichallenge.core.utilities.results.ErrorDataResult;
 import li.parga.pargalichallenge.core.utilities.results.SuccessDataResult;
 import li.parga.pargalichallenge.entities.User;
 import li.parga.pargalichallenge.entities.Account;
-import li.parga.pargalichallenge.entities.dto.UserWithoutAccountDto;
+import li.parga.pargalichallenge.entities.dto.*;
 
-import li.parga.pargalichallenge.entities.dto.AccountWithUserId;
-import li.parga.pargalichallenge.entities.dto.AccountWithUserNameDto;
-import li.parga.pargalichallenge.entities.dto.UserWithoutPasswordDto;
 import li.parga.pargalichallenge.service.UserService;
 import li.parga.pargalichallenge.service.AccountService;
 import lombok.RequiredArgsConstructor;
@@ -39,6 +37,8 @@ public class UserController {
 
     private final ModelMapper modelMapper;
 
+    private CalculateTotal calculateTotal = new CalculateTotal();
+
 
     @PostMapping("/api/user")
     @ResponseStatus(HttpStatus.OK)
@@ -65,8 +65,12 @@ public class UserController {
     }
 
     @GetMapping("/api/accounts")
-    public DataResult<List<Account>> getAccounts(Principal principal) {
-        return this.accountService.findByUser_Email(principal.getName());
+    public DataResult<Object> getAccounts(Principal principal) {
+        List<Account> accounts = this.accountService.findByUser_Email(principal.getName()).getData();
+        double total = calculateTotal.calculate(accounts);
+        AccountsTotalDto accountsTotalDto = new AccountsTotalDto(accounts.get(0).getUser().getFirstName(), accounts.get(0).getUser().getLastName(),
+                accounts, Double.toString(total)+ " TRY");
+        return new SuccessDataResult<>(accountsTotalDto);
     }
 
     @PostMapping("api/account")
