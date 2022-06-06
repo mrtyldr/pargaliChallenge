@@ -37,7 +37,7 @@ public class TransactionService {
         if (account.getBalance() + transactionWithAccountId.getAmount() < 0) {
             throw new NegativeBalanceException("You don't have enough money for carrying this transaction out");
         }
-        if(categoryRepository.findByCategoryId(transactionWithAccountId.getCategoryId())==null)
+        if (categoryRepository.findByCategoryId(transactionWithAccountId.getCategoryId()) == null)
             throw new NotFoundException("category doesn't exist please create a category before continue");
         account.setBalance(account.getBalance() + transactionWithAccountId.getAmount());
         Transaction transaction = new Transaction(transactionWithAccountId.getAmount(), transactionWithAccountId.getDate(), account,
@@ -54,8 +54,6 @@ public class TransactionService {
             throw new NotFoundException("There aren't any transactions to be shown");
         return this.transactionRepository.findAll();
     }
-
-
 
 
     public DataResult<List<Transaction>> findAllOrderByDateAsc() {

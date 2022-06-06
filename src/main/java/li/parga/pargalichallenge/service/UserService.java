@@ -1,7 +1,6 @@
 package li.parga.pargalichallenge.service;
 
 
-
 import li.parga.pargalichallenge.core.utilities.results.DataResult;
 import li.parga.pargalichallenge.core.utilities.results.SuccessDataResult;
 import li.parga.pargalichallenge.entities.dto.AccountWithUserNameDto;
@@ -94,9 +93,6 @@ public class UserService implements UserDetailsService {
     public DataResult<AccountWithUserNameDto> findBalance(String email) {
         return new SuccessDataResult<>(this.userRepository.findBalance(email));
     }
-
-
-
 
 
 }

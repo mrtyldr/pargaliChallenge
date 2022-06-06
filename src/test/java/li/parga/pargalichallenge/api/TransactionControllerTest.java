@@ -47,7 +47,7 @@ class TransactionControllerTest {
                 "  \"amount\": -100,\n" +
                 "  \"date\": \"2022-06-04\",\n" +
                 "  \"categoryId\": 1,\n" +
-                "  \"walletId\": 1\n" +
+                "  \"accountId\": 1\n" +
                 "}";
         mockMvc.perform(post("/api/transaction").contentType(MediaType.APPLICATION_JSON)
                         .content(request)
@@ -58,7 +58,7 @@ class TransactionControllerTest {
 
     @Test
     @WithMockUser("osman@parga.li")
-    public void should_throw_not_found_exception() throws Exception {
+    public void should_throw_category_not_found_exception() throws Exception {
         userService.addUser(new UserWithoutAccountDto(
                 "osman",
                 "osmancik",
@@ -69,7 +69,7 @@ class TransactionControllerTest {
                 "  \"amount\": 100,\n" +
                 "  \"date\": \"2022-06-04\",\n" +
                 "  \"categoryId\": 1,\n" +
-                "  \"walletId\": 1\n" +
+                "  \"accountId\": 1\n" +
                 "}";
         mockMvc.perform(post("/api/transaction").contentType(MediaType.APPLICATION_JSON)
                         .content(request)
@@ -92,7 +92,7 @@ class TransactionControllerTest {
                 "  \"amount\": 100,\n" +
                 "  \"date\": \"2022-06-04\",\n" +
                 "  \"categoryId\": 1,\n" +
-                "  \"walletId\": 1\n" +
+                "  \"accountId\": 1\n" +
                 "}";
         mockMvc.perform(post("/api/transaction").contentType(MediaType.APPLICATION_JSON)
                         .content(request)

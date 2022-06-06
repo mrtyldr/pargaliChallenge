@@ -2,7 +2,6 @@ package li.parga.pargalichallenge.core.utilities.results;
 
 import lombok.EqualsAndHashCode;
 
-@EqualsAndHashCode
 public class SuccessDataResult<T> extends DataResult<T>{
 
     public SuccessDataResult(T data, String message) {
@@ -13,7 +12,7 @@ public class SuccessDataResult<T> extends DataResult<T>{
         super(true, data);
     }
 
-    public SuccessDataResult(){
-        super(true,null);
+    public SuccessDataResult(String message){
+        super(true,message);
     }
 }

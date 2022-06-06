@@ -36,7 +36,7 @@ class UserControllerTest {
 
     @Test
     @WithMockUser(username = "hakan@parga.li")
-    void should_get_wallets() throws Exception {
+    void should_get_accounts() throws Exception {
         // given
         userService.addUser(new UserWithoutAccountDto(
                 "hakan",
@@ -44,7 +44,7 @@ class UserControllerTest {
                 "123456",
                 "hakan@parga.li"
         ));
-        mockMvc.perform(get("/api/wallets"))
+        mockMvc.perform(get("/api/accounts"))
                 .andExpect(status().isOk())
                 .andExpect(content().json("""
                         {
@@ -52,7 +52,7 @@ class UserControllerTest {
                            "message":null,
                            "data":[
                                  {
-                                    "walletId":1,
+                                    "accountId":1,
                                     "balance":0.0,
                                     "accountType":"CASH",
                                     "currency":"TRY"
@@ -86,9 +86,9 @@ class UserControllerTest {
                               "firstName":"hakan",
                               "lastName":"baykuşlar",
                               "email":"hakan@parga.li",
-                              "wallets":[
+                              "accounts":[
                                  {
-                                    "walletId":1,
+                                    "accountId":1,
                                     "balance":0.0,
                                     "accountType":"CASH",
                                     "currency":"TRY"
@@ -109,7 +109,7 @@ class UserControllerTest {
                 "  \"email\": \"osman\"\n" +
                 "}";
 
-        mockMvc.perform(post("/api/users")
+        mockMvc.perform(post("/api/user")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(request)
                         .accept(MediaType.APPLICATION_JSON))
@@ -118,7 +118,7 @@ class UserControllerTest {
 
     @Test
     @WithMockUser("osman@parga.li")
-    public void should_return_not_found_for_invalid_wallet_id() throws Exception {
+    public void should_return_not_found_for_invalid_account_id() throws Exception {
         userService.addUser(new UserWithoutAccountDto(
                 "osman",
                 "osmancik",
@@ -166,8 +166,8 @@ class UserControllerTest {
                 .andExpect(content().json("""
                           {
                           "success": true,
-                          "message": null,
-                          "data": "account with id:1 has succesfully been deleted."
+                          "message": "account with id:1 has succesfully been deleted.",
+                          "data": null
                         }
                         """));
     }

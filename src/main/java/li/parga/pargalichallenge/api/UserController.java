@@ -12,6 +12,7 @@ import li.parga.pargalichallenge.entities.dto.AccountWithUserNameDto;
 import li.parga.pargalichallenge.service.UserService;
 import li.parga.pargalichallenge.service.AccountService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -27,7 +28,9 @@ import java.util.Map;
 @RestController
 @RequiredArgsConstructor
 public class UserController {
+    @Autowired
     private final UserService userService;
+    @Autowired
     private final AccountService accountService;
 
 

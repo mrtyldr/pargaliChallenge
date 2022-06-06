@@ -34,20 +34,7 @@ public class CategoryControllerTest {
     @Autowired
     private CategoryService categoryService;
 
-    @Test
-    @WithMockUser("osman@parga.li")
-    public void findByCategoryId() throws Exception {
-        var category = new SuccessDataResult<>(new Category(1, "test", null));
-        when(categoryService.findByCategoryId(1)).thenReturn(category);
 
-        var request = get("/api/categories/{id}", 1)
-                .contentType(MediaType.APPLICATION_JSON);
-
-        mockMvc.perform(request)
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data.categoryName", is("test")));
-
-    }
 
 
     @Test
