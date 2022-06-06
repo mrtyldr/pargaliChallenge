@@ -27,6 +27,7 @@ class UserControllerTest {
     @Autowired
     MockMvc mockMvc;
 
+
     @Test
     @WithMockUser(username = "osman@parga.li")
     void should_return_not_found_for_invalid_user() throws Exception {
@@ -36,7 +37,7 @@ class UserControllerTest {
 
     @Test
     @WithMockUser(username = "hakan@parga.li")
-    void should_get_wallets() throws Exception {
+    void should_get_accounts() throws Exception {
         // given
         userService.addUser(new UserWithoutAccountDto(
                 "hakan",
@@ -44,20 +45,25 @@ class UserControllerTest {
                 "123456",
                 "hakan@parga.li"
         ));
-        mockMvc.perform(get("/api/wallets"))
+        mockMvc.perform(get("/api/accounts"))
                 .andExpect(status().isOk())
                 .andExpect(content().json("""
                         {
-                           "success":true,
-                           "message":null,
-                           "data":[
-                                 {
-                                    "walletId":1,
-                                    "balance":0.0,
-                                    "accountType":"CASH",
-                                    "currency":"TRY"
-                                 }
-                              ]
+                          "success": true,
+                          "message": null,
+                          "data": {
+                            "firstName": "hakan",
+                            "lastName": "baykuşlar",
+                            "accounts": [
+                              {
+                                "accountId": 1,
+                                "balance": 0,
+                                "accountType": "CASH",
+                                "currency": "TRY"
+                              }
+                            ],
+                            "total": "0.0 TRY"
+                          }
                         }
                         """));
 
@@ -85,16 +91,8 @@ class UserControllerTest {
                               "userId":1,
                               "firstName":"hakan",
                               "lastName":"baykuşlar",
-                              "email":"hakan@parga.li",
-                              "wallets":[
-                                 {
-                                    "walletId":1,
-                                    "balance":0.0,
-                                    "accountType":"CASH",
-                                    "currency":"TRY"
-                                 }
-                              ],
-                              "role":"USER"
+                              "email":"hakan@parga.li"                            
+                              
                            }
                         }
                         """));
@@ -109,7 +107,7 @@ class UserControllerTest {
                 "  \"email\": \"osman\"\n" +
                 "}";
 
-        mockMvc.perform(post("/api/users")
+        mockMvc.perform(post("/api/user")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(request)
                         .accept(MediaType.APPLICATION_JSON))
@@ -118,7 +116,7 @@ class UserControllerTest {
 
     @Test
     @WithMockUser("osman@parga.li")
-    public void should_return_not_found_for_invalid_wallet_id() throws Exception {
+    public void should_return_not_found_for_invalid_account_id() throws Exception {
         userService.addUser(new UserWithoutAccountDto(
                 "osman",
                 "osmancik",
@@ -166,9 +164,40 @@ class UserControllerTest {
                 .andExpect(content().json("""
                           {
                           "success": true,
-                          "message": null,
-                          "data": "account with id:1 has succesfully been deleted."
+                          "message": "account with id:1 has succesfully been deleted.",
+                          "data": null
                         }
+                        """));
+    }
+
+    @Test
+    public void should_add_user() throws Exception {
+        var request = "{\n" +
+                "  \"firstName\": \"osman\",\n" +
+                "  \"lastName\": \"osmancik\",\n" +
+                "  \"password\": \"123456\",\n" +
+                "  \"email\": \"osman@parga.li\"\n" +
+                "}";
+
+        mockMvc.perform(post("/api/user")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(request)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().json("""
+                        {
+                        "success": true,
+                          "message": null,
+                          "data": {
+                            "userId": 1,
+                            "firstName": "osman",
+                            "lastName": "osmancik",
+                         
+                            "email": "osman@parga.li",
+                            "accounts":null,
+                            "role": "USER"
+                          }
+                          }
                         """));
     }
 }

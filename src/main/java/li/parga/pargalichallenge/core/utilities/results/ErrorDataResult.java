@@ -9,7 +9,7 @@ public class ErrorDataResult <T> extends DataResult<T>{
         super(null,false,message);
     }
 
-    public ErrorDataResult(boolean success, T data) {
+    public ErrorDataResult(T data) {
         super(false, data);
     }
 

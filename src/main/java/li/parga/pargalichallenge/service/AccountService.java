@@ -36,11 +36,15 @@ public class AccountService {
         return new SuccessDataResult<>(this.accountRepository.findByUser_Email(email));
     }
 
-    public DataResult<Object> deleteAccount(int accountId,String email){
+    public DataResult<Object> deleteAccount(int accountId, String email) {
         Account account = this.accountRepository.findByAccountId(accountId);
-        if(account.getUser() != userRepository.findByEmail(email) | account == null){
+        if (account.getUser() != userRepository.findByEmail(email) | account == null) {
             throw new NotFoundException("You don't have an account that has account id: " + accountId);
         }
-        return new SuccessDataResult<>("account with id:" + accountId +" has succesfully been deleted.");
+        return new SuccessDataResult<>("account with id:" + accountId + " has succesfully been deleted.");
+    }
+
+    public DataResult<List<Account>> findAll(){
+        return new SuccessDataResult<>(this.accountRepository.findAll());
     }
 }

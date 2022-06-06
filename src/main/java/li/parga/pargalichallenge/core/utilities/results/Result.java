@@ -2,7 +2,7 @@ package li.parga.pargalichallenge.core.utilities.results;
 
 import lombok.EqualsAndHashCode;
 
-@EqualsAndHashCode
+
 public class Result {
     private boolean success;
     private String message;

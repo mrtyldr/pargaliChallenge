@@ -13,9 +13,8 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class CategoryService{
+public class CategoryService {
     private final CategoryRepository categoryRepository;
-
 
 
     public DataResult<Category> addCategory(Category category) {
@@ -25,15 +24,15 @@ public class CategoryService{
 
     public DataResult<Category> findByCategoryId(int categoryId) {
         var category = this.categoryRepository.findByCategoryId(categoryId);
-        if(category == null)
-            throw  new NotFoundException("Category doesn't exist");
+        if (category == null)
+            throw new NotFoundException("Category doesn't exist");
         return new SuccessDataResult<>(category);
     }
 
 
     public DataResult<List<Category>> findAll() {
         var categories = this.categoryRepository.findAll();
-        if(categories.size() == 0)
+        if (categories.size() == 0)
             throw new NotFoundException("There is no predifined category. please add a category before continue");
 
         return new SuccessDataResult<>(categories);

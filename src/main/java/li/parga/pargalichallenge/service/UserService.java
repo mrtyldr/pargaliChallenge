@@ -1,7 +1,6 @@
 package li.parga.pargalichallenge.service;
 
 
-
 import li.parga.pargalichallenge.core.utilities.results.DataResult;
 import li.parga.pargalichallenge.core.utilities.results.SuccessDataResult;
 import li.parga.pargalichallenge.entities.dto.AccountWithUserNameDto;
@@ -14,9 +13,10 @@ import li.parga.pargalichallenge.entities.dto.UserWithoutAccountDto;
 
 import li.parga.pargalichallenge.exceptions.NotFoundException;
 import li.parga.pargalichallenge.exceptions.NotUniqueException;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -30,18 +30,13 @@ import java.util.Collection;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
-
+    private final ModelMapper modelMapper;
     private final AccountRepository accountRepository;
     private final PasswordEncoder passwordEncoder;
 
-    @Autowired
-    public UserService(UserRepository userRepository, AccountRepository accountRepository, PasswordEncoder passwordEncoder) {
-        this.userRepository = userRepository;
-        this.accountRepository = accountRepository;
-        this.passwordEncoder = passwordEncoder;
-    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -60,8 +55,9 @@ public class UserService implements UserDetailsService {
         if (userRepository.findByEmail(userWithoutAccountDto.getEmail()) != null) {
             throw new NotUniqueException("email is not unique");
         }
-        User user = new User(userWithoutAccountDto.getFirstName(), userWithoutAccountDto.getLastName(),
-                userWithoutAccountDto.getPassword(), userWithoutAccountDto.getEmail());
+       /* User user = new User(userWithoutAccountDto.getFirstName(), userWithoutAccountDto.getLastName(),
+                userWithoutAccountDto.getPassword(), userWithoutAccountDto.getEmail());*/
+        User user = modelMapper.map(userWithoutAccountDto,User.class);
 
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -81,6 +77,7 @@ public class UserService implements UserDetailsService {
         var user = this.userRepository.findByEmail(email);
         if (user == null)
             throw new NotFoundException("User Not Found");
+
         return new SuccessDataResult<>(user);
     }
 
@@ -91,12 +88,9 @@ public class UserService implements UserDetailsService {
         return new SuccessDataResult<>(findByEmail(email).getData());
     }
 
-    public DataResult<AccountWithUserNameDto> findBalance(String email) {
-        return new SuccessDataResult<>(this.userRepository.findBalance(email));
+    public DataResult<AccountWithUserNameDto> findBalance(String email,String accountType,String currency) {
+        return new SuccessDataResult<>(this.userRepository.findBalance(email,accountType,currency));
     }
-
-
-
 
 
 }
