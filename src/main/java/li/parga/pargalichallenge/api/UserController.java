@@ -1,6 +1,7 @@
 package li.parga.pargalichallenge.api;
 
 
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import li.parga.pargalichallenge.core.utilities.results.DataResult;
 import li.parga.pargalichallenge.core.utilities.results.ErrorDataResult;
 import li.parga.pargalichallenge.entities.User;

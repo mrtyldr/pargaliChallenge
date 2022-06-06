@@ -13,8 +13,8 @@ import li.parga.pargalichallenge.entities.dto.UserWithoutAccountDto;
 
 import li.parga.pargalichallenge.exceptions.NotFoundException;
 import li.parga.pargalichallenge.exceptions.NotUniqueException;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -29,18 +29,13 @@ import java.util.Collection;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
 
     private final AccountRepository accountRepository;
     private final PasswordEncoder passwordEncoder;
 
-    @Autowired
-    public UserService(UserRepository userRepository, AccountRepository accountRepository, PasswordEncoder passwordEncoder) {
-        this.userRepository = userRepository;
-        this.accountRepository = accountRepository;
-        this.passwordEncoder = passwordEncoder;
-    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -80,6 +75,7 @@ public class UserService implements UserDetailsService {
         var user = this.userRepository.findByEmail(email);
         if (user == null)
             throw new NotFoundException("User Not Found");
+
         return new SuccessDataResult<>(user);
     }
 
