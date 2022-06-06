@@ -2,6 +2,7 @@ package li.parga.pargalichallenge.security;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -30,8 +31,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
         http.authorizeRequests().antMatchers("/login","/","/api/user").permitAll();
         http.authorizeRequests().antMatchers("/api/**").authenticated();
+        http.addFilter(new CustomAuthenticationFilter(authenticationManagerBean()));
         http.formLogin();
         http.httpBasic();
 
+
+    }
+    @Bean
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
     }
 }
