@@ -26,7 +26,7 @@ public class UserServiceTest {
         userRepository = mock(UserRepository.class);
         accountRepository = mock(AccountRepository.class);
         passwordEncoder = mock(PasswordEncoder.class);
-        userService = new UserService(userRepository, accountRepository,passwordEncoder);
+
     }
 
     @Test

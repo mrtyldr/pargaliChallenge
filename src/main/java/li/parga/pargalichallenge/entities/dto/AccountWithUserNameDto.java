@@ -1,13 +1,11 @@
 package li.parga.pargalichallenge.entities.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @AllArgsConstructor
+@NoArgsConstructor
 public class AccountWithUserNameDto {
     private String firstName;
     private String lastName;

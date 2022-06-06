@@ -4,15 +4,18 @@ package li.parga.pargalichallenge.api;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import li.parga.pargalichallenge.core.utilities.results.DataResult;
 import li.parga.pargalichallenge.core.utilities.results.ErrorDataResult;
+import li.parga.pargalichallenge.core.utilities.results.SuccessDataResult;
 import li.parga.pargalichallenge.entities.User;
 import li.parga.pargalichallenge.entities.Account;
 import li.parga.pargalichallenge.entities.dto.UserWithoutAccountDto;
 
 import li.parga.pargalichallenge.entities.dto.AccountWithUserId;
 import li.parga.pargalichallenge.entities.dto.AccountWithUserNameDto;
+import li.parga.pargalichallenge.entities.dto.UserWithoutPasswordDto;
 import li.parga.pargalichallenge.service.UserService;
 import li.parga.pargalichallenge.service.AccountService;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,6 +37,8 @@ public class UserController {
     @Autowired
     private final AccountService accountService;
 
+    private final ModelMapper modelMapper;
+
 
     @PostMapping("/api/user")
     @ResponseStatus(HttpStatus.OK)
@@ -43,8 +48,9 @@ public class UserController {
 
     @GetMapping("/api/user")
     @ResponseStatus(code = HttpStatus.OK)
-    DataResult<User> findByUserId(Principal principal) {
-        return userService.findByEmail(principal.getName());
+    DataResult<UserWithoutPasswordDto> findByUserId(Principal principal) {
+        UserWithoutPasswordDto user = modelMapper.map(userService.findByEmail(principal.getName()).getData(),UserWithoutPasswordDto.class);
+        return new SuccessDataResult<>(user);
     }
 
 
@@ -54,8 +60,8 @@ public class UserController {
     }
 
     @GetMapping("/api/user/balance")
-    public DataResult<AccountWithUserNameDto> findBalance(Principal principal) {
-        return userService.findBalance(principal.getName());
+    public DataResult<AccountWithUserNameDto> findBalance(Principal principal,String accountType,String currency) {
+        return userService.findBalance(principal.getName(),accountType,currency);
     }
 
     @GetMapping("/api/accounts")
@@ -64,7 +70,7 @@ public class UserController {
     }
 
     @PostMapping("api/account")
-    public DataResult<Account> addAccount(@RequestBody @Valid AccountWithUserId accountWithUserId, Principal principal) {
+    public DataResult<Account> addAccount(@RequestBody AccountWithUserId accountWithUserId, Principal principal) {
         User user = this.userService.findByEmail(principal.getName()).getData();
         Account account = new Account(this.userService.findByUserId(user.getUserId()).getData(), accountWithUserId.getBalance(), accountWithUserId.getAccountType(),
                 accountWithUserId.getCurrency());

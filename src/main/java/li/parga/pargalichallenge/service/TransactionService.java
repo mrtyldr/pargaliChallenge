@@ -11,6 +11,9 @@ import li.parga.pargalichallenge.entities.Account;
 
 import li.parga.pargalichallenge.exceptions.NegativeBalanceException;
 import li.parga.pargalichallenge.exceptions.NotFoundException;
+import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.data.domain.Sort;
@@ -19,17 +22,13 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class TransactionService {
     private final TransactionRepository transactionRepository;
     private final AccountRepository accountRepository;
     private final CategoryRepository categoryRepository;
 
-    @Autowired
-    public TransactionService(TransactionRepository transactionRepository, AccountRepository accountRepository, CategoryRepository categoryRepository) {
-        this.transactionRepository = transactionRepository;
-        this.accountRepository = accountRepository;
-        this.categoryRepository = categoryRepository;
-    }
+    private final ModelMapper modelMapper;
 
 
     public DataResult<TransactionWithAccountId> makeTransaction(TransactionWithAccountId transactionWithAccountId) {
@@ -40,8 +39,10 @@ public class TransactionService {
         if (categoryRepository.findByCategoryId(transactionWithAccountId.getCategoryId()) == null)
             throw new NotFoundException("category doesn't exist please create a category before continue");
         account.setBalance(account.getBalance() + transactionWithAccountId.getAmount());
-        Transaction transaction = new Transaction(transactionWithAccountId.getAmount(), transactionWithAccountId.getDate(), account,
-                this.categoryRepository.findByCategoryId(transactionWithAccountId.getCategoryId()));
+        /*Transaction transaction = new Transaction(transactionWithAccountId.getAmount(), transactionWithAccountId.getDate(), account,
+                this.categoryRepository.findByCategoryId(transactionWithAccountId.getCategoryId()));*/
+        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+        Transaction transaction = modelMapper.map(transactionWithAccountId,Transaction.class);
         transactionRepository.save(transaction);
         accountRepository.save(account);
 

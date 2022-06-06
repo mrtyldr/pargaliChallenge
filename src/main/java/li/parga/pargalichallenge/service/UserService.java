@@ -16,6 +16,7 @@ import li.parga.pargalichallenge.exceptions.NotUniqueException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -32,7 +33,7 @@ import java.util.Collection;
 @RequiredArgsConstructor
 public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
-
+    private final ModelMapper modelMapper;
     private final AccountRepository accountRepository;
     private final PasswordEncoder passwordEncoder;
 
@@ -54,8 +55,9 @@ public class UserService implements UserDetailsService {
         if (userRepository.findByEmail(userWithoutAccountDto.getEmail()) != null) {
             throw new NotUniqueException("email is not unique");
         }
-        User user = new User(userWithoutAccountDto.getFirstName(), userWithoutAccountDto.getLastName(),
-                userWithoutAccountDto.getPassword(), userWithoutAccountDto.getEmail());
+       /* User user = new User(userWithoutAccountDto.getFirstName(), userWithoutAccountDto.getLastName(),
+                userWithoutAccountDto.getPassword(), userWithoutAccountDto.getEmail());*/
+        User user = modelMapper.map(userWithoutAccountDto,User.class);
 
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -86,8 +88,8 @@ public class UserService implements UserDetailsService {
         return new SuccessDataResult<>(findByEmail(email).getData());
     }
 
-    public DataResult<AccountWithUserNameDto> findBalance(String email) {
-        return new SuccessDataResult<>(this.userRepository.findBalance(email));
+    public DataResult<AccountWithUserNameDto> findBalance(String email,String accountType,String currency) {
+        return new SuccessDataResult<>(this.userRepository.findBalance(email,accountType,currency));
     }
 
 

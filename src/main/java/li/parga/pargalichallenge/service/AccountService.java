@@ -43,4 +43,8 @@ public class AccountService {
         }
         return new SuccessDataResult<>("account with id:" + accountId + " has succesfully been deleted.");
     }
+
+    public DataResult<List<Account>> findAll(){
+        return new SuccessDataResult<>(this.accountRepository.findAll());
+    }
 }
