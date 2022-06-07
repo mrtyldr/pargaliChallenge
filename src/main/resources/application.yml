@@ -20,18 +20,17 @@ spring:
       show-sql: 'true'
       ddl-auto: update
   security:
-    user:
-      oauth2:
-        client:
-          registration:
-            auth0:
-              client-id: Vhm7tOwn7buQO62YNa4JZn8FGxh38G5l
-              client-secret: JfS2RjNfGz_9vpVcbRHaONjbZBY060ujYJZCh11oacnszVD1CdVWnS0lG8XgPPh-
-              scope:
-                - openid
-                - profile
-                - email
-          provider:
-            auth0:
-              # trailing slash is important!
-              issuer-uri: https://dev-tqzxdnrv.us.auth0.com/
+    oauth2:
+      client:
+        registration:
+          auth0:
+            client-id: Vhm7tOwn7buQO62YNa4JZn8FGxh38G5l
+            client-secret: JfS2RjNfGz_9vpVcbRHaONjbZBY060ujYJZCh11oacnszVD1CdVWnS0lG8XgPPh-
+            scope:
+              - openid
+              - profile
+              - email
+        provider:
+          auth0:
+            # trailing slash is important!
+            issuer-uri: https://dev-tqzxdnrv.us.auth0.com/
