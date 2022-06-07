@@ -24,8 +24,8 @@ spring:
       client:
         registration:
           auth0:
-            client-id: Vhm7tOwn7buQO62YNa4JZn8FGxh38G5l
-            client-secret: JfS2RjNfGz_9vpVcbRHaONjbZBY060ujYJZCh11oacnszVD1CdVWnS0lG8XgPPh-
+            client-id: Ybp5NZpob7PenlU4hw3hiD6V7RA0VcIu
+            client-secret: s3rPvM6SaB_paEAswKl69kI1pHp_AHeVkQSpminFJKOuSf9JtD8Cu-67NUiPIiKL
             scope:
               - openid
               - profile
