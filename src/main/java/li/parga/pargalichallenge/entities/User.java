@@ -4,6 +4,7 @@ package li.parga.pargalichallenge.entities;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -47,8 +48,8 @@ public class User {
    /* @OneToMany(mappedBy = "user",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Transaction> transactions;*/
 
-    @OneToMany(mappedBy = "user")
-    private List<Account> accounts;
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    private List<Account> accounts = new ArrayList<>();
 
     @Column(name = "role")
     private String role = "USER";

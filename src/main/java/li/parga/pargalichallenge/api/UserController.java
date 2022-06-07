@@ -42,7 +42,7 @@ public class UserController {
 
     @PostMapping("/api/user")
     @ResponseStatus(HttpStatus.OK)
-    public DataResult<Object> addUser(@RequestBody @Valid UserWithoutAccountDto user) {
+    public DataResult<User> addUser(@RequestBody @Valid UserWithoutAccountDto user) {
         return this.userService.addUser(user);
     }
 

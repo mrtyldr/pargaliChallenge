@@ -4,9 +4,10 @@ import li.parga.pargalichallenge.entities.Account;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface AccountRepository extends JpaRepository<Account, Integer> {
-    Account findByAccountId(int walletId);
+    Optional<Account> findByAccountId(int walletId);
 
     Account findByUser_UserId(int userId);
 

@@ -1,5 +1,6 @@
 package li.parga.pargalichallenge.service;
 
+import li.parga.pargalichallenge.entities.User;
 import li.parga.pargalichallenge.exceptions.NotFoundException;
 import li.parga.pargalichallenge.repository.AccountRepository;
 import li.parga.pargalichallenge.core.utilities.results.DataResult;
@@ -9,6 +10,7 @@ import li.parga.pargalichallenge.entities.Account;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AccountService {
@@ -37,10 +39,13 @@ public class AccountService {
     }
 
     public DataResult<Object> deleteAccount(int accountId, String email) {
-        Account account = this.accountRepository.findByAccountId(accountId);
-        if (account.getUser() != userRepository.findByEmail(email) | account == null) {
-            throw new NotFoundException("You don't have an account that has account id: " + accountId);
-        }
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new NotFoundException("user not found!"));
+
+        Account account = this.accountRepository.findByAccountId(accountId)
+                .filter(a -> a.getUser().getUserId() != user.getUserId())
+                .orElseThrow(() -> new NotFoundException("You don't have an account that has account id: " + accountId));
+
         return new SuccessDataResult<>("account with id:" + accountId + " has succesfully been deleted.");
     }
 

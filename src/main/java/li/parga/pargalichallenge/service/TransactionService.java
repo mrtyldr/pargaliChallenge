@@ -32,7 +32,9 @@ public class TransactionService {
 
 
     public DataResult<TransactionWithAccountId> makeTransaction(TransactionWithAccountId transactionWithAccountId) {
-        Account account = this.accountRepository.findByAccountId(transactionWithAccountId.getAccountId());
+        Account account = this.accountRepository.findByAccountId(transactionWithAccountId.getAccountId())
+                .orElseThrow(() -> new NotFoundException("account not found!"));
+
         if (account.getBalance() + transactionWithAccountId.getAmount() < 0) {
             throw new NegativeBalanceException("You don't have enough money for carrying this transaction out");
         }
