@@ -40,21 +40,22 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = this.userRepository.findByEmail(username);
-        if (user == null) {
-            log.error("User not found");
-            throw new UsernameNotFoundException("User Not found");
-        }
+        User user = this.userRepository.findByEmail(username)
+                .orElseThrow(() -> {
+                    log.error("User not found");
+                    throw new UsernameNotFoundException("User Not found");
+                });
+
         Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority(user.getRole()));
         return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), authorities);
     }
 
-    public DataResult<Object> addUser(UserWithoutAccountDto userWithoutAccountDto) {
+    public DataResult<User> addUser(UserWithoutAccountDto userWithoutAccountDto) {
 
-        if (userRepository.findByEmail(userWithoutAccountDto.getEmail()) != null) {
+        if (userRepository.existsByEmail(userWithoutAccountDto.getEmail()))
             throw new NotUniqueException("email is not unique");
-        }
+
        /* User user = new User(userWithoutAccountDto.getFirstName(), userWithoutAccountDto.getLastName(),
                 userWithoutAccountDto.getPassword(), userWithoutAccountDto.getEmail());*/
         User user = modelMapper.map(userWithoutAccountDto,User.class);
@@ -63,7 +64,9 @@ public class UserService implements UserDetailsService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         this.userRepository.save(user);
         Account account = new Account(user, 0, "CASH", "TRY");
+
         this.accountRepository.save(account);
+        user.getAccounts().add(account);
         return new SuccessDataResult<>(this.userRepository.save(user));
     }
 
@@ -74,9 +77,8 @@ public class UserService implements UserDetailsService {
 
 
     public DataResult<User> findByEmail(String email) {
-        var user = this.userRepository.findByEmail(email);
-        if (user == null)
-            throw new NotFoundException("User Not Found");
+        var user = this.userRepository.findByEmail(email)
+                .orElseThrow(() -> new NotFoundException("User Not Found"));
 
         return new SuccessDataResult<>(user);
     }
@@ -91,6 +93,4 @@ public class UserService implements UserDetailsService {
     public DataResult<AccountWithUserNameDto> findBalance(String email,String accountType,String currency) {
         return new SuccessDataResult<>(this.userRepository.findBalance(email,accountType,currency));
     }
-
-
 }
