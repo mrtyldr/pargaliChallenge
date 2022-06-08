@@ -16,10 +16,12 @@ import li.parga.pargalichallenge.entities.dto.*;
 import li.parga.pargalichallenge.service.UserService;
 import li.parga.pargalichallenge.service.AccountService;
 import lombok.RequiredArgsConstructor;
+import org.json.JSONObject;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
@@ -51,13 +53,19 @@ public class UserController {
 
     @GetMapping("/api/user")
     @ResponseStatus(code = HttpStatus.OK)
-    HttpResponse<String> findByUserId(Principal principal) throws UnirestException {
+    Object findByUserId(Principal principal) throws UnirestException {
         //UserWithoutPasswordDto user = modelMapper.map(userService.findByEmail(principal.getName()).getData(),UserWithoutPasswordDto.class);
-        HttpResponse<String> response = Unirest.post("https://dev-tqzxdnrv.us.auth0.com/oauth/token")
+        HttpResponse<String> response1 = Unirest.post("https://dev-tqzxdnrv.us.auth0.com/oauth/token")
                 .header("content-type", "application/json")
-                .body("{\"client_id\":\"Vhm7tOwn7buQO62YNa4JZn8FGxh38G5l\",\"client_secret\":\"JfS2RjNfGz_9vpVcbRHaONjbZBY060ujYJZCh11oacnszVD1CdVWnS0lG8XgPPh-\",\"audience\":\"https://dev-tqzxdnrv.us.auth0.com/api/v2/\",\"grant_type\":\"client_credentials\"}")
+                .body("{\"client_id\":\"Ek0IH8V30t5Pf7dBzM8sAbgrfkycE50R\",\"client_secret\":\"Akn9s8rl8MRiP-iOfV_07bdZ5Bscq6KaJx1DPFV1KpOY7Tqm-tu6WjBmrXrZwWnT\",\"audience\":\"https://dev-tqzxdnrv.us.auth0.com/api/v2/\",\"grant_type\":\"client_credentials\"}")
                 .asString();
-        String acces_token = response.getBody();
+
+            JSONObject json = new JSONObject(response1.getBody());
+            String a = json.get("access_token").toString();
+        HttpResponse<String> response = Unirest.get("https://dev-tqzxdnrv.us.auth0.com/api/v2/users/" + principal.getName())
+                .header("authorization", "Bearer " +a)
+                .asString();
+
         return response;
     }
 
