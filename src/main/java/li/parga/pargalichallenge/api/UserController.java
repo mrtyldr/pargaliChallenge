@@ -1,6 +1,9 @@
 package li.parga.pargalichallenge.api;
 
 
+import com.mashape.unirest.http.HttpResponse;
+import com.mashape.unirest.http.Unirest;
+import com.mashape.unirest.http.exceptions.UnirestException;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import li.parga.pargalichallenge.core.utilities.CalculateTotal;
 import li.parga.pargalichallenge.core.utilities.results.DataResult;
@@ -22,7 +25,6 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.net.http.HttpResponse;
 import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
@@ -49,10 +51,14 @@ public class UserController {
 
     @GetMapping("/api/user")
     @ResponseStatus(code = HttpStatus.OK)
-
-    DataResult<UserWithoutPasswordDto> findByUserId(Principal principal) {
-        UserWithoutPasswordDto user = modelMapper.map(userService.findByEmail(principal.getName()).getData(),UserWithoutPasswordDto.class);
-        return new SuccessDataResult<>(user);
+    HttpResponse<String> findByUserId(Principal principal) throws UnirestException {
+        //UserWithoutPasswordDto user = modelMapper.map(userService.findByEmail(principal.getName()).getData(),UserWithoutPasswordDto.class);
+        HttpResponse<String> response = Unirest.post("https://dev-tqzxdnrv.us.auth0.com/oauth/token")
+                .header("content-type", "application/json")
+                .body("{\"client_id\":\"Vhm7tOwn7buQO62YNa4JZn8FGxh38G5l\",\"client_secret\":\"JfS2RjNfGz_9vpVcbRHaONjbZBY060ujYJZCh11oacnszVD1CdVWnS0lG8XgPPh-\",\"audience\":\"https://dev-tqzxdnrv.us.auth0.com/api/v2/\",\"grant_type\":\"client_credentials\"}")
+                .asString();
+        String acces_token = response.getBody();
+        return response;
     }
 
 
