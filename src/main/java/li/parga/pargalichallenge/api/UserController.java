@@ -22,6 +22,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.net.http.HttpResponse;
 import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
@@ -48,6 +49,7 @@ public class UserController {
 
     @GetMapping("/api/user")
     @ResponseStatus(code = HttpStatus.OK)
+
     DataResult<UserWithoutPasswordDto> findByUserId(Principal principal) {
         UserWithoutPasswordDto user = modelMapper.map(userService.findByEmail(principal.getName()).getData(),UserWithoutPasswordDto.class);
         return new SuccessDataResult<>(user);

@@ -84,8 +84,9 @@ public class UserService implements UserDetailsService {
     }
 
     public DataResult<User> deleteUserByEmail(String email) {
-        var wallets = this.accountRepository.findByUser_Email(email);
-        this.accountRepository.deleteAll(wallets);
+        var accounts = this.accountRepository.findByUser_Email(email)
+                .orElseThrow(() -> new NotFoundException("Not found!"));
+        this.accountRepository.deleteAll(accounts);
         this.userRepository.delete(findByEmail(email).getData());
         return new SuccessDataResult<>(findByEmail(email).getData());
     }

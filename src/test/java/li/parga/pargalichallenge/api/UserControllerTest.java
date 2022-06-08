@@ -1,14 +1,20 @@
 package li.parga.pargalichallenge.api;
 
+import li.parga.pargalichallenge.entities.Account;
+import li.parga.pargalichallenge.service.AccountService;
 import li.parga.pargalichallenge.service.UserService;
 import li.parga.pargalichallenge.entities.dto.UserWithoutAccountDto;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.jdbc.JdbcTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
 
 
@@ -25,7 +31,18 @@ class UserControllerTest {
     UserService userService;
 
     @Autowired
+    AccountService accountService;
+
+    @Autowired
     MockMvc mockMvc;
+
+    @Autowired
+    JdbcTemplate jdbcTemplate;
+
+    @AfterEach
+    public void beforeEach() {
+        JdbcTestUtils.deleteFromTables(jdbcTemplate, "categories", "accounts", "users", "transactions");
+    }
 
 
     @Test
@@ -56,7 +73,7 @@ class UserControllerTest {
                             "lastName": "baykuşlar",
                             "accounts": [
                               {
-                                "accountId": 1,
+                                
                                 "balance": 0,
                                 "accountType": "CASH",
                                 "currency": "TRY"
@@ -100,12 +117,13 @@ class UserControllerTest {
 
     @Test
     void should_return_bad_request_for_invalid_email() throws Exception {
-        var request = "{\n" +
-                "  \"firstName\": \"osman\",\n" +
-                "  \"lastName\": \"osmancik\",\n" +
-                "  \"password\": \"123456\",\n" +
-                "  \"email\": \"osman\"\n" +
-                "}";
+        var request = """
+                {
+                  "firstName": "osman",
+                  "lastName": "osmancik",
+                  "password": "123456",
+                  "email": "osman"
+                }""";
 
         mockMvc.perform(post("/api/user")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -134,20 +152,7 @@ class UserControllerTest {
 
     }
 
-    @Test
-    @WithMockUser("osman@parga.li")
-    public void should_return_internal_server_error_for_non_exist_wallet() throws Exception {
-        userService.addUser(new UserWithoutAccountDto(
-                "osman",
-                "osmancik",
-                "123456",
-                "osman@parga.li"
-        ));
 
-        mockMvc.perform(delete("/api/account?accountId=2"))
-                .andExpect(status().isInternalServerError());
-
-    }
 
     @Test
     @WithMockUser("osman@parga.li")
@@ -158,8 +163,9 @@ class UserControllerTest {
                 "123456",
                 "osman@parga.li"
         ));
+            var account = accountService.findByUser_Email("osman@parga.li").getData().get(0);
 
-        mockMvc.perform(delete("/api/account?accountId=1"))
+        mockMvc.perform(delete("/api/account?accountId="+account.getAccountId()))
                 .andExpect(status().isOk())
                 .andExpect(content().json("""
                           {
@@ -189,12 +195,12 @@ class UserControllerTest {
                         "success": true,
                           "message": null,
                           "data": {
-                            "userId": 1,
+                           
                             "firstName": "osman",
                             "lastName": "osmancik",
                          
                             "email": "osman@parga.li",
-                            "accounts":null,
+                            
                             "role": "USER"
                           }
                           }

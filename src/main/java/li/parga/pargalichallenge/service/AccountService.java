@@ -35,7 +35,9 @@ public class AccountService {
 
 
     public DataResult<List<Account>> findByUser_Email(String email) {
-        return new SuccessDataResult<>(this.accountRepository.findByUser_Email(email));
+        var accounts = this.accountRepository.findByUser_Email(email)
+                .orElseThrow(() -> new NotFoundException("You don't have anny accounts to be shown."));
+        return new SuccessDataResult<>(accounts);
     }
 
     public DataResult<Object> deleteAccount(int accountId, String email) {
@@ -45,6 +47,7 @@ public class AccountService {
         Account account = this.accountRepository.findByAccountId(accountId)
                 .filter(a -> a.getUser().getUserId() != user.getUserId())
                 .orElseThrow(() -> new NotFoundException("You don't have an account that has account id: " + accountId));
+        this.accountRepository.delete(account);
 
         return new SuccessDataResult<>("account with id:" + accountId + " has succesfully been deleted.");
     }
