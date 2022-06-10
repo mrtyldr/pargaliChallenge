@@ -1,6 +1,7 @@
 package li.parga.pargalichallenge.api;
 
 import li.parga.pargalichallenge.entities.Account;
+import li.parga.pargalichallenge.entities.User;
 import li.parga.pargalichallenge.service.AccountService;
 import li.parga.pargalichallenge.service.UserService;
 import li.parga.pargalichallenge.entities.dto.UserWithoutAccountDto;
@@ -46,7 +47,7 @@ class UserControllerTest {
 
 
     @Test
-    @WithMockUser(username = "osman@parga.li")
+    @WithMockUser(username = "osmanosman")
     void should_return_not_found_for_invalid_user() throws Exception {
         mockMvc.perform(get("/api/user"))
                 .andExpect(status().isNotFound());
@@ -56,10 +57,10 @@ class UserControllerTest {
     @WithMockUser(username = "hakan@parga.li")
     void should_get_accounts() throws Exception {
         // given
-        userService.addUser(new UserWithoutAccountDto(
+        userService.addUser(new User(
+                "hakanhakan",
                 "hakan",
-                "baykuşlar",
-                "123456",
+                "baykuslar",
                 "hakan@parga.li"
         ));
         mockMvc.perform(get("/api/accounts"))
@@ -70,10 +71,9 @@ class UserControllerTest {
                           "message": null,
                           "data": {
                             "firstName": "hakan",
-                            "lastName": "baykuşlar",
+                            "lastName": "baykuslar",
                             "accounts": [
-                              {
-                                
+                              {                                
                                 "balance": 0,
                                 "accountType": "CASH",
                                 "currency": "TRY"
@@ -87,13 +87,13 @@ class UserControllerTest {
     }
 
     @Test
-    @WithMockUser(username = "hakan@parga.li")
+    @WithMockUser(username = "hakanhakan")
     void should_get_user() throws Exception {
         // given
-        userService.addUser(new UserWithoutAccountDto(
+        userService.addUser(new User(
+                "hakanhakan",
                 "hakan",
-                "baykuşlar",
-                "123456",
+                "baykuslar",
                 "hakan@parga.li"
         ));
 
@@ -105,9 +105,9 @@ class UserControllerTest {
                            "success":true,
                            "message":null,
                            "data":{
-                              "userId":1,
+                             
                               "firstName":"hakan",
-                              "lastName":"baykuşlar",
+                              "lastName":"baykuslar",
                               "email":"hakan@parga.li"                            
                               
                            }
@@ -115,36 +115,21 @@ class UserControllerTest {
                         """));
     }
 
-    @Test
-    void should_return_bad_request_for_invalid_email() throws Exception {
-        var request = """
-                {
-                  "firstName": "osman",
-                  "lastName": "osmancik",
-                  "password": "123456",
-                  "email": "osman"
-                }""";
 
-        mockMvc.perform(post("/api/user")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(request)
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest());
-    }
 
     @Test
     @WithMockUser("osman@parga.li")
     public void should_return_not_found_for_invalid_account_id() throws Exception {
-        userService.addUser(new UserWithoutAccountDto(
+        userService.addUser(new User(
+                "osmanosman",
                 "osman",
                 "osmancik",
-                "123456",
                 "osman@parga.li"
         ));
-        userService.addUser(new UserWithoutAccountDto(
+        userService.addUser(new User(
+                "Ahmetahmet",
                 "Ahmet",
-                "Hakan",
-                "123456",
+                "SARI",
                 "ahmet@hakan.com"
         ));
         mockMvc.perform(delete("/api/account?accountId=2"))
@@ -157,10 +142,10 @@ class UserControllerTest {
     @Test
     @WithMockUser("osman@parga.li")
     public void should_delete_account() throws Exception {
-        userService.addUser(new UserWithoutAccountDto(
+        userService.addUser(new User(
+                "osmanosman",
                 "osman",
-                "osmancik",
-                "123456",
+                "osman",
                 "osman@parga.li"
         ));
             var account = accountService.findByUser_Email("osman@parga.li").getData().get(0);
@@ -170,40 +155,11 @@ class UserControllerTest {
                 .andExpect(content().json("""
                           {
                           "success": true,
-                          "message": "account with id:1 has succesfully been deleted.",
+                          "message": "account with id:%d has succesfully been deleted.",
                           "data": null
                         }
-                        """));
+                        """.formatted(account.getAccountId())));
     }
 
-    @Test
-    public void should_add_user() throws Exception {
-        var request = "{\n" +
-                "  \"firstName\": \"osman\",\n" +
-                "  \"lastName\": \"osmancik\",\n" +
-                "  \"password\": \"123456\",\n" +
-                "  \"email\": \"osman@parga.li\"\n" +
-                "}";
 
-        mockMvc.perform(post("/api/user")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(request)
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().json("""
-                        {
-                        "success": true,
-                          "message": null,
-                          "data": {
-                           
-                            "firstName": "osman",
-                            "lastName": "osmancik",
-                         
-                            "email": "osman@parga.li",
-                            
-                            "role": "USER"
-                          }
-                          }
-                        """));
-    }
 }

@@ -3,6 +3,7 @@ package li.parga.pargalichallenge.repository;
 import li.parga.pargalichallenge.entities.User;
 
 import li.parga.pargalichallenge.entities.dto.AccountWithUserNameDto;
+import org.springframework.data.domain.Example;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -14,7 +15,7 @@ public interface UserRepository extends JpaRepository<User, String> {
 
     boolean existsByEmail(String email);
 
-    User findByUserId(int userId);
+    Optional<User> findByUserId(String userId);
 
 
     @Query("select new li.parga.pargalichallenge.entities.dto.AccountWithUserNameDto(u.firstName,u.lastName,w.balance)" +

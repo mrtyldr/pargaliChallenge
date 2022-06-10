@@ -1,10 +1,11 @@
 package li.parga.pargalichallenge.api;
 
 
+
+import com.auth0.client.auth.AuthAPI;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import li.parga.pargalichallenge.core.utilities.CalculateTotal;
 import li.parga.pargalichallenge.core.utilities.results.DataResult;
 import li.parga.pargalichallenge.core.utilities.results.ErrorDataResult;
@@ -18,15 +19,15 @@ import li.parga.pargalichallenge.service.AccountService;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONObject;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.net.InetSocketAddress;
+import java.net.Proxy;
 import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
@@ -35,9 +36,9 @@ import java.util.Map;
 @RestController
 @RequiredArgsConstructor
 public class UserController {
-    @Autowired
+
     private final UserService userService;
-    @Autowired
+
     private final AccountService accountService;
 
     private final ModelMapper modelMapper;
@@ -45,28 +46,21 @@ public class UserController {
     private CalculateTotal calculateTotal = new CalculateTotal();
 
 
-    @PostMapping("/api/user")
-    @ResponseStatus(HttpStatus.OK)
-    public DataResult<User> addUser(@RequestBody @Valid UserWithoutAccountDto user) {
-        return this.userService.addUser(user);
-    }
+
+    // create client
+    AuthAPI auth = new AuthAPI("{Ydev-tqzxdnrv.us.auth0.com}", "{Ek0IH8V30t5Pf7dBzM8sAbgrfkycE50R}",
+            "{Akn9s8rl8MRiP-iOfV_07bdZ5Bscq6KaJx1DPFV1KpOY7Tqm-tu6WjBmrXrZwWnT}");
+
+
+
 
     @GetMapping("/api/user")
     @ResponseStatus(code = HttpStatus.OK)
-    Object findByUserId(Principal principal) throws UnirestException {
+    DataResult<User> findByUserId(Principal principal) {
         //UserWithoutPasswordDto user = modelMapper.map(userService.findByEmail(principal.getName()).getData(),UserWithoutPasswordDto.class);
-        HttpResponse<String> response1 = Unirest.post("https://dev-tqzxdnrv.us.auth0.com/oauth/token")
-                .header("content-type", "application/json")
-                .body("{\"client_id\":\"Ek0IH8V30t5Pf7dBzM8sAbgrfkycE50R\",\"client_secret\":\"Akn9s8rl8MRiP-iOfV_07bdZ5Bscq6KaJx1DPFV1KpOY7Tqm-tu6WjBmrXrZwWnT\",\"audience\":\"https://dev-tqzxdnrv.us.auth0.com/api/v2/\",\"grant_type\":\"client_credentials\"}")
-                .asString();
 
-            JSONObject json = new JSONObject(response1.getBody());
-            String a = json.get("access_token").toString();
-        HttpResponse<String> response = Unirest.get("https://dev-tqzxdnrv.us.auth0.com/api/v2/users/" + principal.getName())
-                .header("authorization", "Bearer " +a)
-                .asString();
 
-        return response;
+        return this.userService.findByUserId(principal.getName());
     }
 
 
@@ -85,7 +79,7 @@ public class UserController {
         List<Account> accounts = this.accountService.findByUser_Email(principal.getName()).getData();
         double total = calculateTotal.calculate(accounts);
         AccountsTotalDto accountsTotalDto = new AccountsTotalDto(accounts.get(0).getUser().getFirstName(), accounts.get(0).getUser().getLastName(),
-                accounts, Double.toString(total)+ " TRY");
+                accounts, total + " TRY");
         return new SuccessDataResult<>(accountsTotalDto);
     }
 

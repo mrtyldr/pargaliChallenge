@@ -29,13 +29,6 @@ public class UserServiceTest {
 
     }
 
-    @Test
-    public void findByEmail() {
-        var user = new User(1, "Murat", "YILDIRIM", "123456", "mrtyldrm9@gmail.com");
-        when(userRepository.findByUserId(1)).thenReturn(user);
-        var result = this.userService.findByUserId(1);
-        assertEquals(new SuccessDataResult<>(user), result);
-        verify(userRepository).findByUserId(1);
 
-    }
+
 }

@@ -45,7 +45,7 @@ public class AccountService {
                 .orElseThrow(() -> new NotFoundException("user not found!"));
 
         Account account = this.accountRepository.findByAccountId(accountId)
-                .filter(a -> a.getUser().getUserId() != user.getUserId())
+                .filter(a -> a.getUser().getUserId().equals(user.getUserId()))
                 .orElseThrow(() -> new NotFoundException("You don't have an account that has account id: " + accountId));
         this.accountRepository.delete(account);
 
