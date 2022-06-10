@@ -31,48 +31,28 @@ import java.util.Collection;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class UserService implements UserDetailsService {
+public class UserService {
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
     private final AccountRepository accountRepository;
-    private final PasswordEncoder passwordEncoder;
 
 
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = this.userRepository.findByEmail(username)
-                .orElseThrow(() -> {
-                    log.error("User not found");
-                    throw new UsernameNotFoundException("User Not found");
-                });
-
-        Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority(user.getRole()));
-        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), authorities);
-    }
-
-    public DataResult<User> addUser(UserWithoutAccountDto userWithoutAccountDto) {
-
-        if (userRepository.existsByEmail(userWithoutAccountDto.getEmail()))
-            throw new NotUniqueException("email is not unique");
-
-       /* User user = new User(userWithoutAccountDto.getFirstName(), userWithoutAccountDto.getLastName(),
-                userWithoutAccountDto.getPassword(), userWithoutAccountDto.getEmail());*/
-        User user = modelMapper.map(userWithoutAccountDto,User.class);
 
 
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+
+    public DataResult<User> addUser(User user) {
+
         this.userRepository.save(user);
         Account account = new Account(user, 0, "CASH", "TRY");
-
         this.accountRepository.save(account);
         user.getAccounts().add(account);
         return new SuccessDataResult<>(this.userRepository.save(user));
     }
 
 
-    public DataResult<User> findByUserId(int userId) {
-        return new SuccessDataResult<>(this.userRepository.findByUserId(userId));
+    public DataResult<User> findByUserId(String userId) {
+        return new SuccessDataResult<>(this.userRepository.findByUserId(userId).orElseThrow(() ->
+                new NotFoundException("User not found !")));
     }
 
 
@@ -84,13 +64,18 @@ public class UserService implements UserDetailsService {
     }
 
     public DataResult<User> deleteUserByEmail(String email) {
-        var wallets = this.accountRepository.findByUser_Email(email);
-        this.accountRepository.deleteAll(wallets);
+        var accounts = this.accountRepository.findByUser_Email(email)
+                .orElseThrow(() -> new NotFoundException("Not found!"));
+        this.accountRepository.deleteAll(accounts);
         this.userRepository.delete(findByEmail(email).getData());
         return new SuccessDataResult<>(findByEmail(email).getData());
     }
 
     public DataResult<AccountWithUserNameDto> findBalance(String email,String accountType,String currency) {
         return new SuccessDataResult<>(this.userRepository.findBalance(email,accountType,currency));
+    }
+
+    public boolean existByEmail(String email){
+       return this.userRepository.existsByEmail(email);
     }
 }

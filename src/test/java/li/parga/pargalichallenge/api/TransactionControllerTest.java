@@ -1,5 +1,6 @@
 package li.parga.pargalichallenge.api;
 
+import li.parga.pargalichallenge.entities.User;
 import li.parga.pargalichallenge.repository.TransactionRepository;
 import li.parga.pargalichallenge.service.CategoryService;
 import li.parga.pargalichallenge.service.TransactionService;
@@ -52,10 +53,10 @@ class TransactionControllerTest {
     @Test
     @WithMockUser("osman@parga.li")
     public void should_return_negative_balance_exception() throws Exception{
-        var userResult  =userService.addUser(new UserWithoutAccountDto(
+        var userResult  =userService.addUser(new User(
+                "osmanosman",
                 "osman",
                 "osmancik",
-                "123456",
                 "osman@parga.li"
         ));
         categoryService.addCategory(new Category(1,"salary"));
@@ -76,10 +77,10 @@ class TransactionControllerTest {
     @Test
     @WithMockUser("osman@parga.li")
     public void should_throw_category_not_found_exception() throws Exception {
-        var userResult = userService.addUser(new UserWithoutAccountDto(
+        var userResult = userService.addUser(new User(
+                "osmanosman",
                 "osman",
                 "osmancik",
-                "123456",
                 "osman@parga.li"
         ));
         String request = """
@@ -99,10 +100,10 @@ class TransactionControllerTest {
     @Test
     @WithMockUser("osman@parga.li")
     public void should_create_transaction() throws Exception{
-        var userResult = userService.addUser(new UserWithoutAccountDto(
+        var userResult = userService.addUser(new User(
+                "osmanosman",
                 "osman",
                 "osmancik",
-                "123456",
                 "osman@parga.li"
         ));
         categoryService.addCategory(new Category(1,"salary"));
