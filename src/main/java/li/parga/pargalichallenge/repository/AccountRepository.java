@@ -9,7 +9,7 @@ import java.util.Optional;
 public interface AccountRepository extends JpaRepository<Account, Integer> {
     Optional<Account> findByAccountId(int walletId);
 
-    Account findByUser_UserId(int userId);
+    Optional<List<Account>> findByUser_UserId(String userId);
 
     Optional<List<Account>> findByUser_Email(String email);
 

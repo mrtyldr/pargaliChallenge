@@ -50,4 +50,9 @@ public class User {
         this.lastName = lastName;
         this.email = email;
     }
+
+    public User(String userId, String email) {
+        this.userId = userId;
+        this.email = email;
+    }
 }

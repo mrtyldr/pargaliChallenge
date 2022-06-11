@@ -41,10 +41,10 @@ public class TransactionService {
         if (categoryRepository.findByCategoryId(transactionWithAccountId.getCategoryId()) == null)
             throw new NotFoundException("category doesn't exist please create a category before continue");
         account.setBalance(account.getBalance() + transactionWithAccountId.getAmount());
-        /*Transaction transaction = new Transaction(transactionWithAccountId.getAmount(), transactionWithAccountId.getDate(), account,
-                this.categoryRepository.findByCategoryId(transactionWithAccountId.getCategoryId()));*/
-        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
-        Transaction transaction = modelMapper.map(transactionWithAccountId,Transaction.class);
+        Transaction transaction = new Transaction(transactionWithAccountId.getAmount(), transactionWithAccountId.getDate(), account,
+                this.categoryRepository.findByCategoryId(transactionWithAccountId.getCategoryId()));
+
+
         transactionRepository.save(transaction);
         accountRepository.save(account);
 

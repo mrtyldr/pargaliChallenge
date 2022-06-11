@@ -76,7 +76,7 @@ public class UserController {
 
     @GetMapping("/api/accounts")
     public DataResult<Object> getAccounts(Principal principal) {
-        List<Account> accounts = this.accountService.findByUser_Email(principal.getName()).getData();
+        List<Account> accounts = this.accountService.findByUser_UserId(principal.getName()).getData();
         double total = calculateTotal.calculate(accounts);
         AccountsTotalDto accountsTotalDto = new AccountsTotalDto(accounts.get(0).getUser().getFirstName(), accounts.get(0).getUser().getLastName(),
                 accounts, total + " TRY");

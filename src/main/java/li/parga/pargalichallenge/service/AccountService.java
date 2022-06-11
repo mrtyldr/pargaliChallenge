@@ -29,8 +29,9 @@ public class AccountService {
     }
 
 
-    public DataResult<Account> findByUser_UserId(int userId) {
-        return new SuccessDataResult<>(this.accountRepository.findByUser_UserId(userId));
+    public DataResult<List<Account>> findByUser_UserId(String userId) {
+        return new SuccessDataResult<>(this.accountRepository.findByUser_UserId(userId).orElseThrow(() ->
+                new NotFoundException("You don't have any accounts to be shown")));
     }
 
 

@@ -1,19 +1,13 @@
 package li.parga.pargalichallenge.api;
 
-import com.auth0.client.auth.AuthAPI;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
-import li.parga.pargalichallenge.repository.UserRepository;
 import li.parga.pargalichallenge.service.AccountService;
 import li.parga.pargalichallenge.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONObject;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.oauth2.core.oidc.user.OidcUser;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.data.web.JsonPath;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import li.parga.pargalichallenge.entities.User;
@@ -40,10 +34,13 @@ public class HomeController {
                 .asString();
 
         JSONObject userJson = new JSONObject(response.getBody());
-        User user = new User(userJson.get("user_id").toString(),userJson.get("given_name").toString(),
-                userJson.get("family_name").toString(),userJson.get("email").toString());
+        User user = new User(userJson.get("user_id").toString(),userJson.get("email").toString());
         if(!this.userService.existByEmail(user.getEmail()))
             this.userService.addUser(user);
+        if(userJson.getJSONArray("identities").getJSONObject(0).get("provider").toString().equals("google-oauth2")){
+            user.setFirstName(userJson.get("given_name").toString());
+            user.setLastName(userJson.get("family_name").toString());
+        }
         return user.getEmail();
     }
 
