@@ -5,6 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.Normalizer;
 
 import javax.persistence.*;
 import java.util.List;
@@ -16,6 +19,7 @@ import java.util.List;
 @JsonIgnoreProperties("transactions")
 @AllArgsConstructor
 @NoArgsConstructor
+@Indexed
 public class Category {
 
     @Id
@@ -23,6 +27,7 @@ public class Category {
     private int categoryId;
 
     @Column(name = "category_name")
+    @Field
     private String categoryName;
 
     @OneToMany(mappedBy = "category",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
