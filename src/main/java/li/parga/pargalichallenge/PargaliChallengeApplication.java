@@ -2,6 +2,8 @@ package li.parga.pargalichallenge;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import li.parga.pargalichallenge.core.utilities.fulltextsearch.IndexingService;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -13,6 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @SpringBootApplication
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class PargaliChallengeApplication {
 
     public static void main(String[] args) {
@@ -28,6 +31,7 @@ public class PargaliChallengeApplication {
     public ModelMapper modelMapper(){
         return new ModelMapper();
     }
+
 
     @Bean
     public MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter() {

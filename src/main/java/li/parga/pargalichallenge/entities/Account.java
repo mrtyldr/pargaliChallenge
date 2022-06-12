@@ -3,6 +3,9 @@ package li.parga.pargalichallenge.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
+import org.hibernate.search.annotations.ContainedIn;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Indexed;
 
 import java.util.List;
 import javax.persistence.*;
@@ -14,6 +17,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Table(name = "accounts")
 @JsonIgnoreProperties({"user","transactions"})
+@Indexed
 public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,9 +28,11 @@ public class Account {
     private double balance;
 
     @Column(name = "account_type")
+    @Field
     private String accountType;
 
     @Column(name ="currency")
+    @Field
     private String currency;
 
     @ManyToOne
@@ -34,6 +40,7 @@ public class Account {
     private User user;
 
     @OneToMany(mappedBy = "account",cascade = CascadeType.ALL)
+    @ContainedIn
     private List<Transaction> transactions;
 
     public Account(User user, double balance, String accountType, String currency) {

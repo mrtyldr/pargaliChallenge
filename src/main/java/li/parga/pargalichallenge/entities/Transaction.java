@@ -6,6 +6,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.IndexedEmbedded;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -17,6 +20,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonIgnoreProperties({"category"})
+@Indexed
 public class Transaction {
 
     @Id
@@ -25,18 +29,22 @@ public class Transaction {
     private int transactionId;
 
     @Column(name = "amount")
+    @Field
     private double amount;
 
     @Column(name = "date")
     @Temporal(TemporalType.DATE)
+    @Field
     private Date date;
 
     @ManyToOne
     @JoinColumn(name = "account_id")
+    @IndexedEmbedded
     private Account account;
 
     @ManyToOne
     @JoinColumn(name = "category_id")
+    @IndexedEmbedded
     private Category category;
 
     public Transaction(double amount, Date date, Account account, Category category) {
