@@ -81,11 +81,6 @@
             <version>5.11.10.Final</version>
         </dependency>
 
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-search-elasticsearch</artifactId>
-            <version>5.11.10.Final</version>
-        </dependency>
 
 
         <dependency>

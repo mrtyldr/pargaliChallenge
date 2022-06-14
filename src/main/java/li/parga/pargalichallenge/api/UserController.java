@@ -3,9 +3,7 @@ package li.parga.pargalichallenge.api;
 
 
 import com.auth0.client.auth.AuthAPI;
-import com.mashape.unirest.http.HttpResponse;
-import com.mashape.unirest.http.Unirest;
-import com.mashape.unirest.http.exceptions.UnirestException;
+
 import li.parga.pargalichallenge.core.utilities.CalculateTotal;
 import li.parga.pargalichallenge.core.utilities.results.DataResult;
 import li.parga.pargalichallenge.core.utilities.results.ErrorDataResult;
@@ -17,7 +15,7 @@ import li.parga.pargalichallenge.entities.dto.*;
 import li.parga.pargalichallenge.service.UserService;
 import li.parga.pargalichallenge.service.AccountService;
 import lombok.RequiredArgsConstructor;
-import org.json.JSONObject;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,9 +23,6 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
-import java.net.InetSocketAddress;
-import java.net.Proxy;
 import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
@@ -85,7 +80,7 @@ public class UserController {
 
     @PostMapping("api/account")
     public DataResult<Account> addAccount(@RequestBody AccountWithUserId accountWithUserId, Principal principal) {
-        User user = this.userService.findByEmail(principal.getName()).getData();
+        User user = this.userService.findByUserId(principal.getName()).getData();
         Account account = new Account(this.userService.findByUserId(user.getUserId()).getData(), accountWithUserId.getBalance(), accountWithUserId.getAccountType(),
                 accountWithUserId.getCurrency());
         return this.accountService.createAccount(account);
